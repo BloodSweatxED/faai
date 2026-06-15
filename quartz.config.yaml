@@ -6,7 +6,7 @@ configuration:
   enablePopovers: true
   analytics: null
   locale: en-US
-  baseUrl: bloodsweatxed.github.io/faai
+  baseUrl: andrefem13-cpu.github.io/faai
   ignorePatterns:
     - private
     - templates
@@ -198,7 +198,7 @@ plugins:
     options:
       links:
         License (CC BY-SA 4.0): https://creativecommons.org/licenses/by-sa/4.0/
-        Source: https://github.com/BloodSweatxED/faai
+        Source: https://github.com/andrefem13-cpu/faai
         BloodSweatxED: https://bloodsweatxed.com
   - source: github:quartz-community/recent-notes
     enabled: false
