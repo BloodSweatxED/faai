@@ -1,10 +1,10 @@
 # First Aid for AI (FAAI)
 
-The clinician's road map to AI in medicine, published as a living public website.
+The clinician-facing field manual for AI in medicine, published as a living public website.
 
-Built with [Quartz 5](https://quartz.jzhao.xyz/). Content is authored as Obsidian
-spreads in the LIFE vault and published here as a static site with wikilinks,
-backlinks, graph view, and full-text search.
+Built with [Quartz 5](https://quartz.jzhao.xyz/). Spreads are authored in the
+LIFE vault and published here as a static site with wikilinks and full-text
+search.
 
 ## How content flows
 
@@ -25,7 +25,7 @@ npx quartz build --serve     # preview at http://localhost:8080
 The sync script:
 
 - Publishes `01-getting-started`, `02-legal-compliance`, `03-foundations`,
-  `04-clinical-applications`, plus the master index as the home page.
+  `04-clinical-applications`, plus a learner-facing home page and One-Hour Read.
 - Skips the compiled full draft (a generated artifact) and the topic template.
 - Rebuilds frontmatter (title, description, type, tags) for clean metadata.
 - Renders the `**HY-3 / HY-2 / HY-1**` yield markers as styled badges.

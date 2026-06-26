@@ -48,6 +48,11 @@ Relevant is the operative word in component two, which brings up the other half 
 
 Context engineering is selection in both directions: putting in what matters, leaving out what does not. The chart dump and the bare question fail the same way, for opposite reasons.
 
+<div class="faai-box clinical-translation">
+  <div class="faai-box-label">Clinical Translation</div>
+  <p>A context window is not memory. It is the information on the screen right now. If a brilliant consultant could not answer from that packet alone, the model will fill the missing pieces with assumptions.</p>
+</div>
+
 ---
 
 ## Clinical Anchor
@@ -89,4 +94,3 @@ You assume it remembers. It does not. The clinician who described the patient th
 - D8 — Judging the Output (catching the assumptions the window forced)
 
 ---
-

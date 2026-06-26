@@ -5,6 +5,7 @@ type: Spread
 section: 02-legal-compliance
 yield: medium
 status: seed
+unlisted: true
 created: 2026-06-09
 tags:
   - faai
@@ -24,4 +25,3 @@ tags:
 ## Yield
 
 ---
-

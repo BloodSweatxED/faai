@@ -35,6 +35,11 @@ Two corollaries worth keeping:
 
 **Grounding reduces it, nothing eliminates it.** Giving the model the source document to work from (see D7) cuts fabrication sharply, because the right answer is now in the window. It does not cut it to zero.
 
+<div class="faai-box failure-mode">
+  <div class="faai-box-label">Failure Mode</div>
+  <p>Confabulation is most dangerous when the answer is formatted perfectly. The danger signal is not weirdness. The danger signal is an exact dose, citation, number, or named fact that you did not provide and have not checked.</p>
+</div>
+
 ---
 
 ## Clinical Anchor
@@ -67,4 +72,3 @@ Clinicians learn about hallucination, catch one fake citation early, and conclud
 - D8 — Judging the Output (the verification protocol)
 
 ---
-

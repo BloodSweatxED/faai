@@ -1,92 +1,105 @@
 ---
-title: First Aid for AI — Master Index
+title: First Aid for AI
+description: "The AI onboarding clinicians never got: a practical field manual for using AI around patient care without pretending the risk is theoretical."
 status: active
 created: 2026-06-09
-updated: 2026-06-11
+updated: 2026-06-26
 ---
 
-# First Aid for AI (FAAI)
-## The clinician's road map to AI in medicine.
+<div class="faai-home-hero">
+  <div class="faai-kicker">First Aid for AI</div>
+  <h1>The AI onboarding clinicians never got.</h1>
+  <p class="faai-promise">FAAI is a clinical field manual for using AI around patient care. It teaches the mental model, the failure modes, and the verification habits that should have come before the tools arrived in your workflow.</p>
+  <p class="faai-subcopy">Built for clinicians, educators, trainees, and clinical leaders who need practical judgment more than hype.</p>
+</div>
 
-Field Edition v1.0 target: 29 spreads. Full first draft completed 2026-06-11, all spreads at `draft` pending Andre's voice pass.
+<div class="faai-cta-grid">
+  <a class="faai-cta internal-link" href="./01-getting-started/the-five-minute-model">
+    <strong>Start with the 5-minute model</strong>
+    <p>The fastest useful explanation of what the model is doing.</p>
+  </a>
+  <a class="faai-cta internal-link" href="./one-hour-read">
+    <strong>Take the one-hour read</strong>
+    <p>The HY-3 curriculum path for a defensible baseline.</p>
+  </a>
+  <a class="faai-cta internal-link" href="#workflow-lookup">
+    <strong>Look up a tool in my workflow</strong>
+    <p>Scribes, inbox drafts, CDS, chatbots, and patient data.</p>
+  </a>
+</div>
 
----
+<div class="faai-start-strip">
+  <strong>If you have 10 minutes:</strong> read <a class="internal-link" href="./01-getting-started/the-five-minute-model">The Five-Minute Model</a>, then <a class="internal-link" href="./03-foundations/f2-confabulation">Confabulation</a>. That gives you the mechanism and the core safety problem.
+</div>
 
-## Book Structure
+## What This Is
 
-| # | Section | Spreads | Status |
-|---|---------|---------|--------|
-| 01 | Getting Started | 3 | draft |
-| 02 | Legal & Compliance | 4 (+1 deferred) | draft |
-| 03 | Foundations: Substrate + 4D Core | 17 | draft |
-| 04 | Clinical Applications | 5 | draft |
-| 05 | Role Tracks | — | full edition |
-| 06 | Builder Track | — | full edition |
+FAAI is not a digital garden. It is an onboarding path for clinicians who are already being asked to trust, supervise, or sign work shaped by AI.
 
----
+The goal is simple: know what the tool can do, know where it fails, and know what you must verify before your name touches the output.
 
-## Topic Registry
+## What To Read First
 
-### 01 Getting Started
-- [[you-were-never-onboarded]] — Intro. HY-3 — draft
-- [[how-to-use-this-book]] — Map, anatomy, yield system. HY-3 — draft
-- [[the-five-minute-model]] — The one-sentence model. HY-3 — draft
+<div class="faai-task-grid">
+  <div class="faai-task">
+    <strong>I have 10 minutes.</strong>
+    <p>Read <a class="internal-link" href="./01-getting-started/the-five-minute-model">The Five-Minute Model</a> and <a class="internal-link" href="./03-foundations/f2-confabulation">Confabulation</a>.</p>
+  </div>
+  <div class="faai-task">
+    <strong>I have one hour.</strong>
+    <p>Take <a class="internal-link" href="./one-hour-read">The One-Hour Read</a>. It is the visible FAAI curriculum.</p>
+  </div>
+  <div class="faai-task">
+    <strong>I am signing AI-generated notes.</strong>
+    <p>Read <a class="internal-link" href="./03-foundations/d10-the-signature-rule">The Signature Rule</a> and <a class="internal-link" href="./04-clinical-applications/ambient-scribes">Ambient AI Scribes</a>.</p>
+  </div>
+  <div class="faai-task">
+    <strong>I want to paste patient details.</strong>
+    <p>Read <a class="internal-link" href="./02-legal-compliance/phi-definition">PHI: What Counts and What Does Not</a> and <a class="internal-link" href="./02-legal-compliance/hipaa-basics">HIPAA Basics</a>.</p>
+  </div>
+</div>
 
-### 02 Legal & Compliance
-- L1 [[PHI-definition]] — PHI: What Counts and What Doesn't. HY-3 — draft
-- L2 [[HIPAA-basics]] — Where the Chatbot Fits. HY-3 — draft
-- L3 [[liability-when-ai-is-wrong]] — Liability When the AI Is Wrong. HY-3 — draft
-- L4 [[consent-and-disclosure]] — Consent and Disclosure. HY-2 — draft
-- [[FERPA]] — seed, deferred to full edition
+## The Core Model
 
-### 03 Foundations — Substrate
-- F1 [[The Four Primitives]] — Prediction, context, tokens, prompt. HY-3 — draft
-- F2 [[F2 Confabulation]] — Why models make things up. HY-3 — draft
-- F3 [[F3 Training Data and the Cutoff]] — Frozen, uneven, dated knowledge. HY-2 — draft
-- F4 [[F4 The Wrapper Is Not the Model]] — Products vs models, silent swaps. HY-2 — draft
-- F5 [[F5 Same Question Different Answer]] — Probabilistic output. HY-2 — draft
+1. [[you-were-never-onboarded|You Were Never Onboarded]]
+2. [[the-five-minute-model|The Five-Minute Model]]
+3. [[The Four Primitives|The Four Primitives]]
+4. [[F2 Confabulation|Confabulation]]
+5. [[D0 The 4D Model|The 4D Model]]
+6. [[D1 The Delegation Decision|The Delegation Decision]]
+7. [[D2 Stakes and Reversibility|Stakes and Reversibility]]
+8. [[D4 Context Is Everything|Context Is Everything]]
+9. [[D5 Prompting Is a Consult|Prompting Is a Consult]]
+10. [[D8 judging the output|Judging the Output]]
+11. [[D10 The Signature Rule|The Signature Rule]]
 
-### 03 Foundations — 4D Core
-- D0 [[D0 The 4D Model]] — Spread 0: four decisions, three modes. HY-3 — draft
-- D1 [[D1 The Delegation Decision]] — The two-question screen. HY-3 — draft
-- D2 [[D2 Stakes and Reversibility]] — The risk grid, modes assigned. HY-3 — draft
-- D3 [[D3 From Prompts to Pipelines]] — Rule of three, loops amplify. HY-2 — draft
-- D4 [[D4 Context Is Everything]] — The window, incl. heavy-window textbox. HY-3 — draft
-- D5 [[D5 Prompting Is a Consult]] — Role, context, task, constraints, format. HY-3 — draft
-- D6 [[D6 Standing Orders for Your AI]] — Instruction files. HY-2 — draft
-- D7 [[D7 Grounding RAG and the Second Brain]] — Retrieval in plain language. HY-2 — draft
-- D8 [[D8 judging the output]] — The discernment checklist. HY-3 — draft
-- D9 [[D9 The Iteration Loop]] — Describe, judge, re-describe. HY-2 — draft
-- D10 [[D10 The Signature Rule]] — Verify as if you wrote it. HY-3 — draft
-- D11 [[D11 Owning the Record]] — Attribution, audit logs, the deposition lens. HY-2 — draft
+## Patient Data And Liability
 
-### 04 Clinical Applications
-- C1 [[ambient-scribes]] — Ambient AI Scribes. HY-3 — draft
-- C2 [[clinical-decision-support]] — AI CDS. HY-2 — draft
-- C3 [[epic-sepsis-model]] — The Epic Sepsis Model, case study. HY-2 — draft
-- C4 [[patient-facing-chatbots]] — Patient-Facing Chatbots. HY-2 — draft
-- C5 [[inbox-drafting]] — AI Inbox Drafting. HY-3 — draft
+1. [[PHI-definition|PHI: What Counts and What Does Not]]
+2. [[HIPAA-basics|HIPAA Basics]]
+3. [[liability-when-ai-is-wrong|Liability When the AI Is Wrong]]
 
-### 05 Role Tracks
-- Full edition (post-gate)
+## Workflow Lookup
 
-### 06 Builder Track
-- Full edition (post-gate)
-
----
-
-## The One-Hour Read (all HY-3, in order)
-Intro → Five-Minute Model → F1 → F2 → D0 → D1 → D2 → D4 → D5 → D8 → D10 → L1 → L2 → L3 → C1 → C5
-
----
-
-## Status Key
-`seed` — title only, not yet written
-`draft` — content in progress
-`done` — spread complete
-
----
-
-## Changelog
-- 2026-06-11 — Full v1.0 first draft: all 29 field-edition spreads written. Structural calls this pass: D0 leads the 4D Core (Substrate F1–F5 and 4D Core D0–D11 both live in 03-foundations, prefixes carry order); HIPAA and PHI kept as two spreads (Legal runs 4, FERPA deferred); heavy-window textbox folded into D4.
-- 2026-06-09 — Index created; outline locked (Version A, Field Edition First).
+<div id="workflow-lookup" class="faai-workflow-grid">
+  <div class="faai-workflow">
+    <strong>Ambient AI scribes</strong>
+    <p>What can go wrong when the note sounds right: <a class="internal-link" href="./04-clinical-applications/ambient-scribes">read the scribe guide</a>.</p>
+  </div>
+  <div class="faai-workflow">
+    <strong>Inbox drafting</strong>
+    <p>How drafts turn editors into approvers: <a class="internal-link" href="./04-clinical-applications/inbox-drafting">read inbox drafting</a>.</p>
+  </div>
+  <div class="faai-workflow">
+    <strong>Clinical decision support</strong>
+    <p>Where prediction meets the bedside: <a class="internal-link" href="./04-clinical-applications/clinical-decision-support">read AI CDS</a>.</p>
+  </div>
+  <div class="faai-workflow">
+    <strong>Patient-facing chatbots</strong>
+    <p>How the AI consult goes underground: <a class="internal-link" href="./04-clinical-applications/patient-facing-chatbots">read patient chatbots</a>.</p>
+  </div>
+  <div class="faai-workflow">
+    <strong>PHI and HIPAA</strong>
+    <p>When patient details can enter a tool: <a class="internal-link" href="./02-legal-compliance/hipaa-basics">read HIPAA basics</a>.</p>
+  </div>
+</div>

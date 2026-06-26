@@ -37,6 +37,11 @@ What the wrapper controls is exactly the list of things that determine output qu
 
 None of this is scandal. It is how the industry works. But it means your trust should attach to a product version at a point in time, not to a brand name, and it means the question "what model is this and what gets sent to it" is a fair question for any vendor. A vendor who cannot answer it has told you something.
 
+<div class="faai-box clinical-translation">
+  <div class="faai-box-label">Clinical Translation</div>
+  <p>The wrapper is the hospital workflow. The model is the underlying physiology. Same physiology, different workflow, different outcome. Ask what data enters the wrapper and what model sits underneath it.</p>
+</div>
+
 ---
 
 ## Clinical Anchor
@@ -68,4 +73,3 @@ Trust gets attached to the brand and then auto-renews. The tool earned confidenc
 - D10 — The Signature Rule (your name outlives every vendor update)
 
 ---
-

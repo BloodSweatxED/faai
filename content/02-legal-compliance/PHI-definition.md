@@ -37,6 +37,11 @@ The clinical habit that matters: rare combination equals identification. A diagn
 
 Why this spread sits in front of the AI book: every prompt is a disclosure to whoever operates the tool. The PHI question has to be answered before the typing, every time. De-identification is something you do, deliberately, against the list. It is not what is left over after you skip the name.
 
+<div class="faai-box do-not-do-this">
+  <div class="faai-box-label">Do Not Do This</div>
+  <p>Do not treat "no name, no MRN" as de-identified. Dates, location, age over 89, rare mechanisms, and unusual clinical stories can identify the patient by combination.</p>
+</div>
+
 ---
 
 ## Clinical Anchor
@@ -69,4 +74,3 @@ De-identification gets equated with anonymization-by-name-removal, because the n
 - D6 — Standing Orders for Your AI (a no-PHI rule that fires when you forget)
 
 ---
-

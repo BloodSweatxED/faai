@@ -33,6 +33,11 @@ There are four things to understand. Everything else is a named pattern built fr
 
 **Prompt.** You have no access to the model’s internals. The only surface you can touch is what you put in front of it. Instructions, examples, context, constraints: all of it is prompt. Input quality determines output quality, fully and without exception.
 
+<div class="faai-box eli-andre">
+  <div class="faai-box-label">ELI André</div>
+  <p>Think of the model like a consult resident with no chart access unless you hand over the chart. The context window is the packet you send. Tokens are the page limit. The prompt is the consult question plus the relevant history.</p>
+</div>
+
 -----
 
 ## Clinical Anchor
@@ -78,4 +83,3 @@ This is not a flaw to be patched in the next version. It is the mechanism. Build
 - D8 — Judging the Output (why fluency is not accuracy)
 
 -----
-

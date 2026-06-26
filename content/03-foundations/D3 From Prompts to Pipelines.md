@@ -31,6 +31,11 @@ The agentic version goes further. An agent runs a loop in plain language: plan t
 
 Which is why the rule for pipelines is the inversion of the rule for prompts. With a one-off prompt, you verify the output. With a pipeline, you verify the system, then keep verifying it on a schedule, because the system sits on moving parts: the model behind it (F4), the sampling on top of it (F5), and the data sources underneath it can each shift without any visible change to the pipeline itself.
 
+<div class="faai-box failure-mode">
+  <div class="faai-box-label">Failure Mode</div>
+  <p>An agent is a pipeline that can keep acting. Each step becomes context for the next step. One bad extraction early can become a polished final report five steps later.</p>
+</div>
+
 ---
 
 ## Clinical Anchor
@@ -66,4 +71,3 @@ Pipelines fail by succeeding. The workflow runs clean for six months, the verifi
 - F5 — Same Question, Different Answer (freeze verified outputs, not prompts)
 
 ---
-

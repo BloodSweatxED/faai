@@ -33,6 +33,11 @@ Predictable failure geography follows. Strongest: the narrative HPI, where the p
 
 Two non-negotiables ride along: recording consent, every visit (L4), and the signature rule at full strength (D10), because this is the one AI output that becomes legal testimony with your name on it every single time you use it.
 
+<div class="faai-box do-not-do-this">
+  <div class="faai-box-label">Do Not Do This</div>
+  <p>Do not sign a scribe note by vibe. Line-check the exam, laterality, numbers, medications, negatives, and anything the visit did not explicitly contain.</p>
+</div>
+
 ---
 
 ## Clinical Anchor
@@ -69,4 +74,3 @@ The first month builds the habit and the third month breaks it. Early outputs ge
 - L4 — Consent and Disclosure (the recording ask)
 
 ---
-

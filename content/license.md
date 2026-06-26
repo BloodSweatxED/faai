@@ -31,4 +31,4 @@ This is a field guide for clinicians thinking about AI, not medical, legal, or c
 
 ## Status
 
-This is a **living draft** (Field Edition v1.0). Spreads are published as labeled drafts and revised in the open. A draft label is a feature, not an apology — the alternative is a frozen PDF, which the book's own thesis argues against.
+This is a living field guide. FAAI will change as clinical AI tools, institutional rules, and bedside workflows change. Use the current page as educational guidance, not as a substitute for local policy or legal advice.

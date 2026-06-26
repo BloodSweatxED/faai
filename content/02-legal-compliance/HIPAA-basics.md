@@ -33,6 +33,11 @@ Strip HIPAA to the parts that govern your AI use and three concepts remain.
 
 What HIPAA does not do: care how good the tool is. There is no accuracy exception, no "it improved care" defense, no carve-out for tools everyone at the conference was praising. The analysis is plumbing, not merit: where does the data go, and is that destination bound to protect it?
 
+<div class="faai-box use-this-today">
+  <div class="faai-box-label">Use This Today</div>
+  <p>Before entering patient details, ask one question: is this specific account inside my institution's covered environment with a BAA? If you do not know, treat it as no.</p>
+</div>
+
 ---
 
 ## Clinical Anchor
@@ -70,4 +75,3 @@ The breach does not feel like a breach. It feels like working late. The consumer
 - D6 — Standing Orders for Your AI (engineering the rule so fatigue cannot break it)
 
 ---
-

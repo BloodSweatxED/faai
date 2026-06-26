@@ -6,7 +6,7 @@
   font-family: var(--codeFont);
   font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
   text-transform: uppercase;
   padding: 0.25rem 0.6rem;
   border-radius: 0.35rem;
@@ -31,7 +31,207 @@
 }
 
 [saved-theme="dark"] .hy-badge {
-  &.hy-3 { color: #a5d6a7; }
-  &.hy-2 { color: #ffcc80; }
-  &.hy-1 { color: #b0bec5; }
+  &.hy-3 {
+    color: #a5d6a7;
+  }
+  &.hy-2 {
+    color: #ffcc80;
+  }
+  &.hy-1 {
+    color: #b0bec5;
+  }
+}
+
+// --- FAAI learner homepage ---
+.faai-home-hero {
+  padding: 1.25rem 0 1rem;
+  border-bottom: 1px solid var(--lightgray);
+  margin-bottom: 1.5rem;
+
+  h1 {
+    margin-top: 0;
+  }
+
+  .faai-promise {
+    font-size: 1.25rem;
+    line-height: 1.45;
+    color: var(--dark);
+    max-width: 44rem;
+  }
+
+  .faai-subcopy {
+    color: var(--darkgray);
+    max-width: 44rem;
+  }
+}
+
+.faai-kicker,
+.faai-section-label,
+.faai-box-label {
+  font-family: var(--codeFont);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--secondary);
+}
+
+.faai-cta-grid,
+.faai-task-grid,
+.faai-workflow-grid {
+  display: grid;
+  gap: 0.85rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.faai-cta-grid {
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+}
+
+.faai-task-grid,
+.faai-workflow-grid {
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+.faai-cta,
+.faai-task,
+.faai-workflow {
+  border: 1px solid var(--lightgray);
+  border-radius: 0.5rem;
+  padding: 0.9rem 1rem;
+  background: color-mix(in srgb, var(--light) 90%, white);
+
+  strong {
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  p {
+    margin: 0;
+    color: var(--darkgray);
+  }
+}
+
+.faai-cta {
+  border-top: 4px solid var(--secondary);
+}
+
+.faai-start-strip {
+  border-left: 4px solid #2e7d32;
+  padding: 0.75rem 1rem;
+  background: rgba(46, 125, 50, 0.08);
+  margin: 1.25rem 0;
+}
+
+// --- FAAI spread anatomy ---
+article .faai-section {
+  border: 1px solid var(--lightgray);
+  border-radius: 0.5rem;
+  margin: 1.25rem 0;
+  padding: 0.85rem 1rem;
+  background: color-mix(in srgb, var(--light) 92%, white);
+
+  h2 {
+    margin-top: 0.1rem;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+article .faai-bottom-line {
+  border-left: 5px solid #2e7d32;
+  background: rgba(46, 125, 50, 0.08);
+}
+
+article .faai-clinical-anchor {
+  border-left: 5px solid #1565c0;
+  background: rgba(21, 101, 192, 0.08);
+}
+
+article .faai-what-to-do {
+  border-left: 5px solid #6a1b9a;
+  background: rgba(106, 27, 154, 0.08);
+}
+
+article .faai-how-it-fails {
+  border-left: 5px solid #c62828;
+  background: rgba(198, 40, 40, 0.08);
+}
+
+article .faai-cross-refs {
+  border-left: 5px solid #546e7a;
+}
+
+// --- FAAI teaching boxes ---
+.faai-box {
+  border: 1px solid var(--lightgray);
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  padding: 0.8rem 0.95rem;
+  background: rgba(40, 75, 99, 0.07);
+
+  p {
+    margin: 0.4rem 0 0;
+  }
+}
+
+.faai-box.eli-andre {
+  border-left: 5px solid #00897b;
+}
+
+.faai-box.clinical-translation {
+  border-left: 5px solid #1565c0;
+}
+
+.faai-box.failure-mode,
+.faai-box.do-not-do-this {
+  border-left: 5px solid #c62828;
+}
+
+.faai-box.use-this-today {
+  border-left: 5px solid #2e7d32;
+}
+
+[saved-theme="dark"] {
+  .faai-cta,
+  .faai-task,
+  .faai-workflow,
+  article .faai-section {
+    background: color-mix(in srgb, var(--light) 84%, black);
+  }
+
+  .faai-start-strip,
+  article .faai-bottom-line {
+    background: rgba(129, 199, 132, 0.1);
+  }
+
+  article .faai-clinical-anchor,
+  .faai-box {
+    background: rgba(100, 181, 246, 0.09);
+  }
+
+  article .faai-what-to-do {
+    background: rgba(186, 104, 200, 0.1);
+  }
+
+  article .faai-how-it-fails {
+    background: rgba(239, 83, 80, 0.1);
+  }
+}
+
+@media (max-width: 700px) {
+  .faai-home-hero .faai-promise {
+    font-size: 1.08rem;
+  }
+
+  .faai-cta,
+  .faai-task,
+  .faai-workflow,
+  article .faai-section,
+  .faai-box {
+    border-radius: 0.4rem;
+    padding: 0.8rem;
+  }
 }

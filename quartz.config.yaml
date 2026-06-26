@@ -1,12 +1,12 @@
 # yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
 configuration:
   pageTitle: First Aid for AI
-  pageTitleSuffix: " — FAAI"
+  pageTitleSuffix: " | FAAI"
   enableSPA: true
   enablePopovers: true
   analytics: null
   locale: en-US
-  baseUrl: andrefem13-cpu.github.io/faai
+  baseUrl: bloodsweatxed.github.io/faai
   ignorePatterns:
     - private
     - templates
@@ -130,7 +130,7 @@ plugins:
       position: left
       priority: 50
   - source: github:quartz-community/graph
-    enabled: true
+    enabled: false
     layout:
       position: right
       priority: 10
@@ -143,7 +143,7 @@ plugins:
       groupOptions:
         grow: true
   - source: github:quartz-community/backlinks
-    enabled: true
+    enabled: false
     layout:
       position: right
       priority: 50
@@ -198,7 +198,7 @@ plugins:
     options:
       links:
         License (CC BY-SA 4.0): https://creativecommons.org/licenses/by-sa/4.0/
-        Source: https://github.com/andrefem13-cpu/faai
+        Source: https://github.com/BloodSweatxED/faai
         BloodSweatxED: https://bloodsweatxed.com
   - source: github:quartz-community/recent-notes
     enabled: false
@@ -223,7 +223,7 @@ plugins:
         - tags
         - aliases
       excludedProperties: []
-      hidePropertiesView: false
+      hidePropertiesView: true
       delimiters: ---
       language: yaml
     order: 5

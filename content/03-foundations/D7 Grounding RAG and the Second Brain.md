@@ -33,6 +33,11 @@ Built out, this becomes a second brain: your note templates, your institution's 
 
 But understand what grounding does not do. The model has no loyalty to the source. If retrieval pulls the wrong document, an outdated version, or nothing at all, the model does not stop and say so. It answers anyway, from training memory, in exactly the same voice. Grounded and ungrounded answers are indistinguishable on the surface, which means the failure mode of a grounding system is invisible by default.
 
+<div class="faai-box use-this-today">
+  <div class="faai-box-label">Use This Today</div>
+  <p>When you attach a guideline, ask the tool to quote the exact passage it used and to say "not addressed in the source" when the answer is not in the document. Then spot-check the quote.</p>
+</div>
+
 ---
 
 ## Clinical Anchor
@@ -69,4 +74,3 @@ Retrieval pulls the wrong document, the outdated version, or nothing, and the mo
 - D8 — Judging the Output (verification does not retire because the tool cites sources)
 
 ---
-
