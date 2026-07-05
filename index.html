@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>First Aid for AI &#8212; The Onboarding Clinicians Never Got</title>
+<meta name="description" content="A clinical field manual for using AI around patient care. The mental model, the failure modes, and the verification habits &#8212; written for clinicians, no code required.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2EFE8; --card:#F7F5EF; --ink:#101B2D; --ink2:#3B4658; --muted:#6E7687;
+  --red:#C8102E; --line:#D9D3C4; --line2:#C6BFAD;
+  --navy:#101B2D; --navy2:#182740; --on-navy:#EDE9DD; --on-navy2:#8B96A8;
+  --disp:'Anton','Arial Narrow',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --sans:'IBM Plex Sans',-apple-system,'Segoe UI',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono)}
+
+/* ---------- stat bar ---------- */
+#statbar{background:var(--navy);color:var(--on-navy);border-bottom:3px solid var(--red);padding:14px 0}
+.sb-in{max-width:1140px;margin:0 auto;padding:0 28px;display:flex;align-items:center;gap:48px;overflow-x:auto}
+.sb-in::-webkit-scrollbar{display:none}
+#statbar .ekg{width:190px;min-width:120px;height:34px;color:var(--red);flex-shrink:1}
+.stat{white-space:nowrap}
+.stat b{display:block;font-size:19px;font-weight:700;line-height:1.1}
+.stat span{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--on-navy2)}
+
+/* ---------- header ---------- */
+#hdr{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--line2)}
+.hdr-in{max-width:1140px;margin:0 auto;padding:16px 28px;display:flex;align-items:center;gap:28px}
+.wordmark{font-family:var(--disp);font-size:21px;letter-spacing:.02em;text-transform:uppercase;white-space:nowrap}
+.wordmark em{font-style:normal;color:var(--red)}
+#hnav{margin-left:auto;display:flex;align-items:center;gap:26px}
+#hnav a{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);padding:4px 0;border-bottom:2px solid transparent}
+#hnav a:hover{border-bottom-color:var(--red)}
+.srch-wrap{position:relative}
+#q{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;background:transparent;border:1px solid var(--line2);border-radius:0;color:var(--ink);padding:7px 10px;width:170px;outline:none;text-transform:uppercase}
+#q::placeholder{color:var(--muted);letter-spacing:.14em}
+#q:focus{border-color:var(--red)}
+#qr{display:none;position:absolute;top:calc(100% + 6px);right:0;width:340px;max-height:380px;overflow-y:auto;background:var(--paper);border:1px solid var(--ink);box-shadow:6px 6px 0 rgba(16,27,45,.14);z-index:60}
+#qr.on{display:block}
+#qr a{display:block;padding:11px 14px;border-bottom:1px solid var(--line)}
+#qr a:last-child{border-bottom:none}
+#qr a:hover,#qr a.sel{background:var(--navy);color:var(--on-navy)}
+#qr .qt{display:block;font-weight:600;font-size:13.5px;line-height:1.3}
+#qr .qs{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+#qr a:hover .qs,#qr a.sel .qs{color:var(--on-navy2)}
+#qr .qnone{padding:14px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted)}
+
+/* ---------- shared ---------- */
+.wrap{max-width:1140px;margin:0 auto;padding:0 28px}
+.kick{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--red);word-spacing:.2em}
+.badge{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;white-space:nowrap;flex-shrink:0}
+.b3{background:var(--red);color:#FDF9F0}
+.b2{background:var(--navy);color:var(--on-navy)}
+.b1{background:transparent;color:var(--ink2);box-shadow:inset 0 0 0 1px var(--line2)}
+.slab{font-family:var(--disp);text-transform:uppercase;line-height:.95;letter-spacing:.005em;font-weight:400}
+.page{display:none}.page.active{display:block}
+article.page{scroll-margin-top:64px}
+
+/* ---------- hero ---------- */
+#hero{position:relative;padding:84px 0 72px;overflow:hidden}
+#hero .ekg{position:absolute;left:0;right:0;bottom:36px;width:100%;height:120px;color:rgba(200,16,46,.10);pointer-events:none}
+#hero h1{font-size:clamp(52px,9.5vw,118px);margin:18px 0 30px;max-width:900px}
+.lead{font-size:19px;line-height:1.65;color:var(--ink2);max-width:620px;margin-bottom:14px}
+.lead2{font-size:14.5px;color:var(--muted);max-width:620px;margin-bottom:36px}
+.chips{display:flex;gap:12px;flex-wrap:wrap}
+.chip{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;border:1.5px solid var(--ink);border-radius:999px;padding:9px 20px}
+
+/* ---------- section frame ---------- */
+.sec{padding:58px 0 22px}
+.sec-h{display:flex;align-items:baseline;gap:18px;border-top:3px solid var(--ink);padding-top:16px;margin-bottom:26px}
+.sec-h .slab{font-size:clamp(24px,3.4vw,34px)}
+.sec-h .mono-note{margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-align:right}
+
+/* ---------- depth chooser ---------- */
+.depth{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.dc{border:2px solid var(--ink);padding:24px 22px 26px;position:relative;transition:background .15s,color .15s;display:block}
+.dc .dn{font-family:var(--disp);font-size:44px;line-height:1;text-transform:uppercase}
+.dc .du{font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--red);display:block;margin:2px 0 16px}
+.dc .dt{font-weight:700;font-size:16px;margin-bottom:6px}
+.dc .dd{font-size:13.5px;color:var(--ink2);line-height:1.55}
+.dc:hover{background:var(--navy);color:var(--on-navy)}
+.dc:hover .dd{color:var(--on-navy2)}
+.dc:hover .du{color:#FF5C72}
+
+/* ---------- situational cards ---------- */
+.sit{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hc{border:1px solid var(--line2);background:var(--card);padding:20px 22px;transition:border-color .15s,transform .15s;display:block}
+.hc:hover{border-color:var(--ink);transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(16,27,45,.15)}
+.hc-k{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+.hc-t{font-size:15.5px;font-weight:700;margin-bottom:5px}
+.hc-d{font-size:13.5px;color:var(--ink2);line-height:1.55}
+
+/* ---------- one-hour path ---------- */
+.path{border:2px solid var(--ink);background:var(--card)}
+.pr{display:flex;align-items:center;gap:18px;padding:15px 22px;border-bottom:1px solid var(--line);transition:background .12s,color .12s}
+.pr:last-child{border-bottom:none}
+.pr:hover{background:var(--navy);color:var(--on-navy)}
+.pn{font-family:var(--disp);font-size:22px;color:var(--red);width:34px;flex-shrink:0}
+.pt{flex:1;min-width:0}
+.pt strong{display:block;font-size:14.5px;line-height:1.3}
+.pt span{font-size:12.5px;color:var(--muted);line-height:1.4}
+.pr:hover .pt span{color:var(--on-navy2)}
+.lm{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.pr:hover .lm{color:var(--on-navy2)}
+
+/* ---------- library ---------- */
+.lg{border:1px solid var(--line2);background:var(--card);margin-bottom:14px}
+.lg summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:16px;padding:18px 22px;user-select:none}
+.lg summary::-webkit-details-marker{display:none}
+.lgt{font-family:var(--disp);font-size:20px;text-transform:uppercase;letter-spacing:.01em;white-space:nowrap}
+.lgd{font-size:12.5px;color:var(--muted);line-height:1.4;flex:1;min-width:0}
+.lgc{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);white-space:nowrap}
+.chev{width:9px;height:9px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg);transition:transform .15s;flex-shrink:0}
+.lg[open] .chev{transform:rotate(-135deg)}
+.lg[open] summary{border-bottom:1px solid var(--line)}
+.lrs{padding:4px 0}
+.lr{display:flex;align-items:center;gap:16px;padding:11px 22px;transition:background .12s,color .12s}
+.lr:hover{background:var(--navy);color:var(--on-navy)}
+.ln{font-family:var(--mono);font-size:10.5px;color:var(--red);flex-shrink:0}
+.lt{flex:1;font-size:14px;font-weight:500;min-width:0}
+.lr:hover .lm{color:var(--on-navy2)}
+
+/* ---------- footer ---------- */
+#ftr{margin-top:70px;background:var(--navy);color:var(--on-navy2);border-top:3px solid var(--red)}
+.ftr-in{max-width:1140px;margin:0 auto;padding:34px 28px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+#ftr .ekg{width:150px;height:28px;color:var(--red)}
+#ftr p{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
+#ftr a{color:var(--on-navy);border-bottom:1px solid var(--red)}
+#ftr .fr{margin-left:auto}
+
+/* ---------- article ---------- */
+.art-wrap{max-width:760px;margin:0 auto;padding:52px 28px 40px}
+.am{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px;font-family:var(--mono)}
+.crumb{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);font-weight:600}
+.crumb:hover{border-bottom:1px solid var(--red)}
+.csep{color:var(--line2)}
+.as{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.rt{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-left:auto}
+.at{font-family:var(--disp);font-weight:400;font-size:clamp(36px,6vw,58px);line-height:.98;text-transform:uppercase;letter-spacing:.005em;margin-bottom:30px}
+.bl{background:var(--navy);color:var(--on-navy);padding:22px 26px;margin-bottom:40px;border-left:4px solid var(--red)}
+.bll{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:#FF5C72;margin-bottom:9px}
+.blt{font-size:16.5px;line-height:1.6;font-weight:500}
+.ab{font-size:16px;line-height:1.75;color:var(--ink2)}
+.ab h2{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--ink);margin:40px 0 14px;padding-bottom:9px;border-bottom:2px solid var(--ink)}
+.ab h2.rh{color:var(--red);border-bottom-color:var(--red)}
+.ab p{margin-bottom:18px}.ab p:last-child{margin-bottom:0}
+.ab strong{color:var(--ink);font-weight:600}
+.ab em{font-style:italic}
+.ab ol,.ab ul{padding-left:24px;margin-bottom:18px}
+.ab li{margin-bottom:10px}
+.ab li::marker{font-family:var(--mono);font-size:13px;color:var(--red);font-weight:600}
+.callout{padding:16px 20px;margin:26px 0;border-left:3px solid var(--ink);background:rgba(16,27,45,.045)}
+.callout .cl{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;margin-bottom:7px;color:var(--ink)}
+.callout p{font-size:14.5px;line-height:1.65;margin:0}
+.cf,.cd{border-left-color:var(--red);background:rgba(200,16,46,.06)}
+.cf .cl,.cd .cl{color:var(--red)}
+.cs{border-left-color:var(--red);background:rgba(200,16,46,.06)}
+.cs strong,.cf strong{color:var(--red)}
+.anch{border:1px solid var(--line2);border-left:3px solid var(--red);background:var(--card);padding:20px 24px;margin:8px 0 24px;font-size:15px;line-height:1.7}
+.anch p{margin-bottom:14px}.anch p:last-child{margin-bottom:0}
+.xr{margin-top:44px;padding-top:20px;border-top:1px solid var(--line2)}
+.xrl{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.xrt{display:flex;flex-wrap:wrap;gap:8px}
+.xt{border:1px solid var(--ink);border-radius:999px;padding:5px 15px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;transition:background .12s,color .12s;display:inline-block}
+.xt:hover{background:var(--red);border-color:var(--red);color:#FDF9F0}
+.an{display:flex;gap:14px;margin-top:36px}
+.anb{flex:1;border:2px solid var(--ink);padding:14px 18px;transition:background .12s,color .12s;display:block}
+.anb:hover{background:var(--navy);color:var(--on-navy)}
+.anb .nd{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:4px}
+.anb .nt{display:block;font-weight:600;font-size:13.5px;line-height:1.3}
+.anb.nr{text-align:right}
+
+/* ---------- responsive ---------- */
+@media(max-width:860px){
+  .depth{grid-template-columns:1fr}
+  .sit{grid-template-columns:1fr}
+  .sb-in{gap:28px}
+  #hnav a.hlink{display:none}
+  .lgd{display:none}
+  #hero{padding:56px 0 52px}
+  .hdr-in{padding:13px 18px;gap:14px}
+  .wrap{padding:0 18px}
+  .art-wrap{padding:40px 18px 32px}
+  #q{width:120px}
+  #qr{width:280px}
+  .pt span{display:none}
+  .an{flex-direction:column}
+  .anb.nr{text-align:left}
+}
+/* ---------- print ---------- */
+@media print{
+  #statbar,#hdr,#ftr,.an,.xr,#hero .ekg{display:none!important}
+  body{background:#fff;color:#000}
+  .page{display:none}.page.active{display:block}
+}
+</style>
+</head>
+<body>
+
+<div id="statbar">
+  <div class="sb-in">
+    <svg class="ekg" viewBox="0 0 600 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 20 H120 L132 20 L140 6 L150 34 L158 20 H300 L312 20 L320 8 L330 32 L338 20 H480 L492 20 L500 6 L510 34 L518 20 H600" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/></svg>
+    <div class="stat"><b>29</b><span>Spreads</span></div>
+    <div class="stat"><b>17</b><span>Read-This-Week</span></div>
+    <div class="stat"><b>&#8776;90 min</b><span>Cover to Cover</span></div>
+    <div class="stat"><b>0</b><span>Code Required</span></div>
+  </div>
+</div>
+
+<header id="hdr">
+  <div class="hdr-in">
+    <a class="wordmark" href="#/">First Aid <em>for</em> AI</a>
+    <nav id="hnav">
+      <a class="hlink" href="#/">Start</a>
+      <a class="hlink" href="#one-hour">1-Hour Path</a>
+      <a class="hlink" href="#library">Library</a>
+      <div class="srch-wrap">
+        <input id="q" type="search" placeholder="Search" autocomplete="off" aria-label="Search articles">
+        <div id="qr" role="listbox"></div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ================= HOME ================= -->
+<div id="home" class="page active">
+
+  <section id="hero">
+    <svg class="ekg" viewBox="0 0 600 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 20 H120 L132 20 L140 6 L150 34 L158 20 H300 L312 20 L320 8 L330 32 L338 20 H480 L492 20 L500 6 L510 34 L518 20 H600" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/></svg>
+    <div class="wrap">
+      <div class="kick">A Clinical Field Manual &#183; For Clinicians &#183; No Code Required</div>
+      <h1 class="slab">The AI onboarding you never got.</h1>
+      <p class="lead">AI arrived in your workflow before anyone trained you on it. This manual teaches the mental model, the failure modes, and the verification habits that should have come first.</p>
+      <p class="lead2">Every tool you trust came with a course, supervision, or onboarding. AI came with a login.</p>
+      <div class="chips"><span class="chip">Clinician</span><span class="chip">Educator</span><span class="chip">Trainee</span><span class="chip">Clinical Leader</span></div>
+    </div>
+  </section>
+
+  <section class="sec" id="depth">
+    <div class="wrap">
+      <div class="sec-h"><span class="slab">Choose your depth</span><span class="mono-note">No wrong door</span></div>
+      <div class="depth">
+        <a class="dc" href="#the-five-minute-model">
+          <span class="dn">5</span><span class="du">Minutes</span>
+          <span class="dt">The Five-Minute Model</span>
+          <span class="dd">One spread. How the technology actually works, and the single habit that prevents most of the harm.</span>
+        </a>
+        <a class="dc" href="#one-hour">
+          <span class="dn">60</span><span class="du">Minutes</span>
+          <span class="dt">The One-Hour Path</span>
+          <span class="dd">Twelve spreads, in order. A complete, defensible baseline for working near patients. Marked &#8220;This Week.&#8221;</span>
+        </a>
+        <a class="dc" href="#library">
+          <span class="dn">All</span><span class="du">29 Spreads</span>
+          <span class="dt">The Full Manual</span>
+          <span class="dd">Foundations, the 4D framework, legal, and the tools already in your hospital. About 90 minutes cover to cover.</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="situations">
+    <div class="wrap">
+      <div class="sec-h"><span class="slab">Start where it hurts</span><span class="mono-note">Situational entries</span></div>
+      <div class="sit">
+        <a class="hc" href="#phi-what-counts"><div class="hc-k">If this is you</div><div class="hc-t">About to paste patient details into a chatbot</div><div class="hc-d">Read PHI: What Counts and HIPAA Basics first. The analysis takes two minutes; the breach lasts forever.</div></a>
+        <a class="hc" href="#the-signature-rule"><div class="hc-k">If this is you</div><div class="hc-t">Signing notes an AI drafted</div><div class="hc-d">Read The Signature Rule and Ambient Scribes before the next note you didn&#8217;t fully write.</div></a>
+        <a class="hc" href="#confabulation"><div class="hc-k">If this is you</div><div class="hc-t">The answer looked perfect and was wrong</div><div class="hc-d">Confabulation explains why fabrication is formatted exactly like truth &#8212; and why you can&#8217;t spot it by inspection.</div></a>
+        <a class="hc" href="#you-were-never-onboarded"><div class="hc-k">If this is you</div><div class="hc-t">Just want the beginning</div><div class="hc-d">You Were Never Onboarded explains what this manual is, why it exists, and how to read it in an hour.</div></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="one-hour">
+    <div class="wrap">
+      <div class="sec-h"><span class="slab">The one-hour path</span><span class="mono-note">12 spreads &#183; &#8776;36 min</span></div>
+      <div class="path">
+<a class="pr" href="#you-were-never-onboarded"><span class="pn">01</span><span class="pt"><strong>You Were Never Onboarded</strong><span>Why this field manual exists</span></span><span class="lm">2 min</span></a>
+<a class="pr" href="#the-five-minute-model"><span class="pn">02</span><span class="pt"><strong>The Five-Minute Model</strong><span>How the technology works, minimum viable version</span></span><span class="lm">3 min</span></a>
+<a class="pr" href="#confabulation"><span class="pn">03</span><span class="pt"><strong>Confabulation: Why Models Make Things Up</strong><span>Why models make things up and what that costs clinically</span></span><span class="lm">3 min</span></a>
+<a class="pr" href="#the-4d-model"><span class="pn">04</span><span class="pt"><strong>The 4D Model</strong><span>The operating framework for every AI interaction</span></span><span class="lm">3 min</span></a>
+<a class="pr" href="#the-delegation-decision"><span class="pn">05</span><span class="pt"><strong>The Delegation Decision</strong><span>What can go to AI and what must stay with you</span></span><span class="lm">3 min</span></a>
+<a class="pr" href="#context-is-everything"><span class="pn">06</span><span class="pt"><strong>Context Is Everything</strong><span>The window is the universe. If it&#8217;s not there, it&#8217;s not there.</span></span><span class="lm">3 min</span></a>
+<a class="pr" href="#judging-the-output"><span class="pn">07</span><span class="pt"><strong>Judging the Output</strong><span>Fluency tells you nothing about accuracy</span></span><span class="lm">2 min</span></a>
+<a class="pr" href="#the-signature-rule"><span class="pn">08</span><span class="pt"><strong>The Signature Rule</strong><span>If your name goes on it, you verify it as if you wrote it</span></span><span class="lm">3 min</span></a>
+<a class="pr" href="#phi-what-counts"><span class="pn">09</span><span class="pt"><strong>PHI: What Counts and What Doesn&#8217;t</strong><span>De-identification is not just removing the name</span></span><span class="lm">3 min</span></a>
+<a class="pr" href="#hipaa-basics"><span class="pn">10</span><span class="pt"><strong>HIPAA Basics: Where the Chatbot Fits</strong><span>The BAA is the entire dividing line between tools</span></span><span class="lm">4 min</span></a>
+<a class="pr" href="#ambient-scribes"><span class="pn">11</span><span class="pt"><strong>Ambient AI Scribes</strong><span>The note is a prediction, not a transcript of your visit</span></span><span class="lm">3 min</span></a>
+<a class="pr" href="#ai-inbox-drafting"><span class="pn">12</span><span class="pt"><strong>AI Inbox Drafting</strong><span>The day editing becomes approving, the tool is practicing medicine under your name</span></span><span class="lm">4 min</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="library">
+    <div class="wrap">
+      <div class="sec-h"><span class="slab">The library</span><span class="mono-note"><span class="badge b3">This Week</span> costs you this week &#183; <span class="badge b2">This Quarter</span> costs you this quarter</span></div>
+<details class="lg" open>
+<summary><span class="lgt">Start Here</span><span class="lgd">Why this exists and how to read it. Three short spreads.</span><span class="lgc">3 spreads</span><span class="chev" aria-hidden="true"></span></summary>
+<div class="lrs"><a class="lr" href="#you-were-never-onboarded"><span class="ln">01</span><span class="lt">You Were Never Onboarded</span><span class="lm">2 min</span><span class="badge b3">This Week</span></a>
+<a class="lr" href="#how-to-use-this-book"><span class="ln">02</span><span class="lt">How to Use This Book</span><span class="lm">2 min</span><span class="badge b3">This Week</span></a>
+<a class="lr" href="#the-five-minute-model"><span class="ln">03</span><span class="lt">The Five-Minute Model</span><span class="lm">3 min</span><span class="badge b3">This Week</span></a></div>
+</details>
+<details class="lg">
+<summary><span class="lgt">How It Works</span><span class="lgd">The substrate. Five spreads, no math &#8212; the pathophysiology of the tool.</span><span class="lgc">5 spreads</span><span class="chev" aria-hidden="true"></span></summary>
+<div class="lrs"><a class="lr" href="#the-four-primitives"><span class="ln">01</span><span class="lt">The Four Primitives</span><span class="lm">3 min</span><span class="badge b3">This Week</span></a>
+<a class="lr" href="#confabulation"><span class="ln">02</span><span class="lt">Confabulation: Why Models Make Things Up</span><span class="lm">3 min</span><span class="badge b3">This Week</span></a>
+<a class="lr" href="#training-data-and-the-cutoff"><span class="ln">03</span><span class="lt">Training Data &amp; the Cutoff</span><span class="lm">3 min</span><span class="badge b2">This Quarter</span></a>
+<a class="lr" href="#the-wrapper-is-not-the-model"><span class="ln">04</span><span class="lt">The Wrapper Is Not the Model</span><span class="lm">3 min</span><span class="badge b2">This Quarter</span></a>
+<a class="lr" href="#same-question-different-answer"><span class="ln">05</span><span class="lt">Same Question, Different Answer</span><span class="lm">3 min</span><span class="badge b2">This Quarter</span></a></div>
+</details>
+<details class="lg">
+<summary><span class="lgt">The 4D Framework</span><span class="lgd">Delegation, Description, Discernment, Diligence. The operating spine.</span><span class="lgc">12 spreads</span><span class="chev" aria-hidden="true"></span></summary>
+<div class="lrs"><a class="lr" href="#the-4d-model"><span class="ln">01</span><span class="lt">The 4D Model</span><span class="lm">3 min</span><span class="badge b3">This Week</span></a>
+<a class="lr" href="#the-delegation-decision"><span class="ln">02</span><span class="lt">The Delegation Decision</span><span class="lm">3 min</span><span class="badge b3">This Week</span></a>
+<a class="lr" href="#stakes-and-reversibility"><span class="ln">03</span><span class="lt">Stakes &amp; Reversibility</span><span class="lm">3 min</span><span class="badge b3">This Week</span></a>
+<a class="lr" href="#from-prompts-to-pipelines"><span class="ln">04</span><span class="lt">From Prompts to Pipelines</span><span class="lm">2 min</span><span class="badge b2">This Quarter</span></a>
+<a class="lr" href="#context-is-everything"><span class="ln">05</span><span class="lt">Context Is Everything</span><span class="lm">3 min</span><span class="badge b3">This Week</span></a>
+<a class="lr" href="#prompting-is-a-consult"><span class="ln">06</span><span class="lt">Prompting Is a Consult</span><span class="lm">3 min</span><span class="badge b3">This Week</span></a>
+<a class="lr" href="#standing-orders"><span class="ln">07</span><span class="lt">Standing Orders for Your AI</span><span class="lm">2 min</span><span class="badge b2">This Quarter</span></a>
+<a class="lr" href="#grounding-and-rag"><span class="ln">08</span><span class="lt">Grounding: RAG &amp; the Second Brain</span><span class="lm">3 min</span><span class="badge b2">This Quarter</span></a>
+<a class="lr" href="#judging-the-output"><span class="ln">09</span><span class="lt">Judging the Output</span><span class="lm">2 min</span><span class="badge b3">This Week</span></a>
+<a class="lr" href="#the-iteration-loop"><span class="ln">10</span><span class="lt">The Iteration Loop</span><span class="lm">3 min</span><span class="badge b2">This Quarter</span></a>
+<a class="lr" href="#the-signature-rule"><span class="ln">11</span><span class="lt">The Signature Rule</span><span class="lm">3 min</span><span class="badge b3">This Week</span></a>
+<a class="lr" href="#owning-the-record"><span class="ln">12</span><span class="lt">Owning the Record</span><span class="lm">3 min</span><span class="badge b2">This Quarter</span></a></div>
+</details>
+<details class="lg">
+<summary><span class="lgt">Legal &amp; Compliance</span><span class="lgd">PHI, HIPAA, liability, consent. Short rules, long consequences.</span><span class="lgc">4 spreads</span><span class="chev" aria-hidden="true"></span></summary>
+<div class="lrs"><a class="lr" href="#phi-what-counts"><span class="ln">01</span><span class="lt">PHI: What Counts and What Doesn&#8217;t</span><span class="lm">3 min</span><span class="badge b3">This Week</span></a>
+<a class="lr" href="#hipaa-basics"><span class="ln">02</span><span class="lt">HIPAA Basics: Where the Chatbot Fits</span><span class="lm">4 min</span><span class="badge b3">This Week</span></a>
+<a class="lr" href="#liability-when-ai-is-wrong"><span class="ln">03</span><span class="lt">Liability When the AI Is Wrong</span><span class="lm">3 min</span><span class="badge b3">This Week</span></a>
+<a class="lr" href="#consent-and-disclosure"><span class="ln">04</span><span class="lt">Consent &amp; Disclosure</span><span class="lm">3 min</span><span class="badge b2">This Quarter</span></a></div>
+</details>
+<details class="lg">
+<summary><span class="lgt">Clinical Applications</span><span class="lgd">The tools already in your hospital &#8212; including the part the vendor left out.</span><span class="lgc">5 spreads</span><span class="chev" aria-hidden="true"></span></summary>
+<div class="lrs"><a class="lr" href="#ambient-scribes"><span class="ln">01</span><span class="lt">Ambient AI Scribes</span><span class="lm">3 min</span><span class="badge b3">This Week</span></a>
+<a class="lr" href="#clinical-decision-support"><span class="ln">02</span><span class="lt">AI Clinical Decision Support</span><span class="lm">4 min</span><span class="badge b2">This Quarter</span></a>
+<a class="lr" href="#the-epic-sepsis-model"><span class="ln">03</span><span class="lt">The Epic Sepsis Model: A Case Study</span><span class="lm">4 min</span><span class="badge b2">This Quarter</span></a>
+<a class="lr" href="#patient-facing-chatbots"><span class="ln">04</span><span class="lt">Patient-Facing Chatbots</span><span class="lm">4 min</span><span class="badge b2">This Quarter</span></a>
+<a class="lr" href="#ai-inbox-drafting"><span class="ln">05</span><span class="lt">AI Inbox Drafting</span><span class="lm">4 min</span><span class="badge b3">This Week</span></a></div>
+</details>
+    </div>
+  </section>
+
+</div>
+
+<!-- ================= ARTICLES ================= -->
+<article id="you-were-never-onboarded" class="page" data-title="You Were Never Onboarded">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">Start Here</span><span class="badge b3">This Week</span><span class="rt">2 min read</span></div>
+<h1 class="at">You Were Never Onboarded</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">The technology arrived in your workflow before anyone trained you on it. This book is the onboarding that never happened.</p></div>
+<div class="ab">
+<p>You already use AI. Maybe it drafts your inbox replies. Maybe it writes your notes while you talk. Maybe it is just the chatbot you quietly ask when a presentation does not fit the illness script. Either way, the technology arrived in your workflow before anyone trained you on it.</p>
+<p>Think about how you learned every other tool you trust. Ultrasound came with a course. The ventilator came with supervision. Even the EHR, for all its flaws, came with onboarding. AI came with a login.</p>
+<p>This book is the onboarding that never happened.</p>
+<p>It is not a textbook. Textbooks about AI are outdated before the ink dries, and this field changes monthly. It is not vendor material. Nobody selling you a tool will lead with how it fails, and how it fails is exactly what you need to know first. Every clinical application in this book ends the same way: how this breaks in the wild, and what the break costs.</p>
+<p>You do not need to learn to code. You need four competencies, and you already use all four every shift. Deciding what to hand off and what to keep: you do that every time you assign a task to a resident. Communicating exactly what you want: every consult you have ever called. Judging what comes back: every result you have ever interpreted. Owning the outcome: every note you have ever signed. This book calls them Delegation, Description, Discernment, and Diligence. They are the spine of everything that follows.</p>
+<p>The book is organized by yield, not by topic hierarchy. HY-3 concepts will cost you something this week. HY-2, this quarter. HY-1 is context, not crisis. If you have one hour, read the HY-3 spreads and stop. They are marked.</p>
+<p>Read it front to back once. It is short on purpose. After that it is a reference: the spread you need, the week you need it.</p>
+<p>The tools will keep changing. The four competencies will not. Learn the spine, and every new tool is just a new rotation.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#how-to-use-this-book">How to Use This Book</a><a class="xt" href="#the-five-minute-model">The Five-Minute Model</a><a class="xt" href="#the-4d-model">The 4D Model</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#/"><span class="nd">&#8592; Previous</span><span class="nt">Home</span></a><a class="anb nr" href="#how-to-use-this-book"><span class="nd">Next &#8594;</span><span class="nt">How to Use This Book</span></a></nav>
+</div>
+</article>
+
+<article id="how-to-use-this-book" class="page" data-title="How to Use This Book">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">Start Here</span><span class="badge b3">This Week</span><span class="rt">2 min read</span></div>
+<h1 class="at">How to Use This Book</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">Every spread has the same skeleton, every spread ends with how it fails, and the yield badge tells you what to read when you only have an hour.</p></div>
+<div class="ab">
+<h2>The Map</h2>
+<p>Five sections, in dependency order.</p>
+<p><strong>Getting Started.</strong> You are here. Three spreads, then you are oriented.</p>
+<p><strong>Substrate.</strong> How the technology actually works, in five spreads, none of which require math. This is the pathophysiology. Skip it and the rest of the book becomes rules you memorized instead of behavior you can predict.</p>
+<p><strong>The 4D Core.</strong> The operating framework. Twelve spreads across four decisions: Delegation (what to hand off), Description (how to ask), Discernment (how to judge what comes back), Diligence (owning the result). This is the spine.</p>
+<p><strong>Legal.</strong> PHI, HIPAA, liability, consent. Short, because the rules are short. The consequences are not.</p>
+<p><strong>Clinical Applications.</strong> The tools already in your hospital: scribes, decision support, sepsis models, patient chatbots, inbox drafting. Each one gets the same treatment, including the part the vendor left out.</p>
+<h2>The Spread Anatomy</h2>
+<p>Every spread follows the same shape. Learn it once, navigate by it forever.</p>
+<ol>
+<li><strong>Title + yield badge.</strong></li>
+<li><strong>Bottom line.</strong> One sentence. The whole spread compressed. If you stop here, you still got the point.</li>
+<li><strong>The concept.</strong> Plain language. Any jargon gets defined in the same sentence it appears.</li>
+<li><strong>Clinical anchor.</strong> One scenario from the ED, the clinic, or the inbox. Concrete.</li>
+<li><strong>What to do.</strong> The protocol.</li>
+<li><strong>How it fails.</strong> On every spread, no exceptions. The failure mode in the wild and what it costs.</li>
+<li><strong>Cross-refs.</strong> Where to go next.</li>
+</ol>
+<h2>The Yield System</h2>
+<p><strong>HY-3</strong> will cost you something this week. These are the spreads where the failure mode is already in your workflow today, whether you have noticed or not.</p>
+<p><strong>HY-2</strong> will cost you something this quarter. Important, not urgent.</p>
+<p><strong>HY-1</strong> is context. It makes the HY-3 and HY-2 material make sense, but it will not hurt you on its own.</p>
+<p>If you have one hour: read every HY-3 spread, front to back, and stop. That is a complete, defensible baseline.</p>
+<h2 class="rh">How It Fails</h2>
+<p>Readers treat this book like a textbook: read once, shelve, trust memory. That works for anatomy. It does not work for a field that ships updates monthly. The tools described here will change. The failure modes are more durable than the features, which is why the failure modes are the organizing principle. When a spread and reality disagree, check the version number on the cover against the changelog, then trust reality.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#you-were-never-onboarded">You Were Never Onboarded</a><a class="xt" href="#the-five-minute-model">The Five-Minute Model</a><a class="xt" href="#the-four-primitives">The Four Primitives</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#you-were-never-onboarded"><span class="nd">&#8592; Previous</span><span class="nt">You Were Never Onboarded</span></a><a class="anb nr" href="#the-five-minute-model"><span class="nd">Next &#8594;</span><span class="nt">The Five-Minute Model</span></a></nav>
+</div>
+</article>
+
+<article id="the-five-minute-model" class="page" data-title="The Five-Minute Model">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">Start Here</span><span class="badge b3">This Week</span><span class="rt">3 min read</span></div>
+<h1 class="at">The Five-Minute Model</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">A model predicts the next word based only on what is in front of it right now, and you control everything through what you put there.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>That sentence is the whole technology. Five minutes to unpack it.</p>
+<p><strong>It predicts.</strong> A large language model is a pattern completion engine trained on enormous amounts of text. Given everything written so far, it produces the most plausible next word, then the next, then the next. There is no database lookup, no reasoning module, no fact checker underneath. When the output reads like thinking, the model is predicting what thinking looks like in text.</p>
+<p><strong>It only sees the window.</strong> The model works inside a context window: the block of text it can see at this moment. Your prompt, the conversation so far, any documents you attached. That is the entire universe. It has no memory of your last session, no knowledge of your patient, no access to your hospital's protocols unless those things are in the window right now.</p>
+<p><strong>Plausible is not the same as true.</strong> Because the engine is prediction, the output is always fluent and always confident. A correct answer and a fabricated one arrive in identical prose. Confidence is a property of the text, not evidence about accuracy.</p>
+<p><strong>You hold one lever.</strong> You cannot reach into the model. The only control surface is the input: what you put in the window and how you ask. Input quality determines output quality. Fully.</p>
+<p>That is the model. Everything else in this book is the clinical application of those four facts.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>You ask a chatbot: "What's the dose adjustment for this patient's renal function?"</p>
+<p>It answers, instantly and specifically. But look at what was in the window: one sentence. No creatinine, no weight, no drug, no patient. The model predicted what a dose-adjustment answer looks like, because that is the only thing it can do with what you gave it. The answer is plausible. Whether it is true for your patient was never in play, because your patient was never in the room.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Before you ask, ask yourself: is everything the model needs in the window? If you have not provided it, the model does not have it.</li>
+<li>Treat fluency as zero evidence. Judge the output the way you judge a test result, not the way you judge a colleague's tone of voice.</li>
+<li>When output disappoints, fix the input first. It is the only lever you have, and it is usually the problem.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Clinicians map the chatbot onto things they already trust: a search engine, a reference text, a colleague. It is none of these. A search engine retrieves. A reference is curated. A colleague knows when to say "I'm not sure." The model predicts, always, with the same confidence, whether the window holds everything or nothing. The cost of the wrong mental model is misplaced trust, and misplaced trust is the root of nearly every failure mode in this book.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-four-primitives">The Four Primitives</a><a class="xt" href="#context-is-everything">Context Is Everything</a><a class="xt" href="#judging-the-output">Judging the Output</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#how-to-use-this-book"><span class="nd">&#8592; Previous</span><span class="nt">How to Use This Book</span></a><a class="anb nr" href="#the-four-primitives"><span class="nd">Next &#8594;</span><span class="nt">The Four Primitives</span></a></nav>
+</div>
+</article>
+
+<article id="the-four-primitives" class="page" data-title="The Four Primitives">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">How It Works</span><span class="badge b3">This Week</span><span class="rt">3 min read</span></div>
+<h1 class="at">The Four Primitives</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">An AI model does one thing: it predicts the next word based on everything in front of it right now. Every capability, every failure, and every lever you have traces back to that.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>There are four things to understand. Everything else is a named pattern built from these.</p>
+<p><strong>Prediction.</strong> The model's only job is to predict the most likely next token given everything before it. There is no reasoning engine, no database, no logic system underneath. It is extraordinarily sophisticated pattern completion over language. When it seems to think, it is predicting what thinking looks like in text.</p>
+<p><strong>Context.</strong> The model exists entirely inside a context window: the block of text it can see at any given moment. It has no memory between sessions. It does not know your patient, your institution, or your last conversation unless you put that information in front of it. The context window is the room. Everything the model knows is whatever is currently in the room.</p>
+<p><strong>Tokens.</strong> Everything is broken into tokens, roughly three-quarters of a word each. All cost, speed, and capacity limits are denominated in tokens. Token limits are the reason you cannot paste an entire chart and expect a complete summary.</p>
+<p><strong>Prompt.</strong> You have no access to the model's internals. The only surface you can touch is what you put in front of it. Instructions, examples, context, constraints: all of it is prompt. Input quality determines output quality, fully and without exception.</p>
+<div class="callout ci"><div class="cl">Clinical Translation</div><p>Think of the model like a consult resident with no chart access unless you hand over the chart. The context window is the packet you send. Tokens are the page limit. The prompt is the consult question plus the relevant history.</p></div>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>Two attendings ask the same AI tool about empiric antibiotic coverage for a febrile neutropenic patient.</p>
+<p>The first types: <em>"Empiric abx for febrile neutropenia?"</em></p>
+<p>The second types: <em>"I have a 58-year-old on cycle 4 of carboplatin/paclitaxel, ANC 180, temp 38.4, no localizing symptoms, allergy to penicillin. My hospital formulary is [attached]. What empiric regimen fits our protocol?"</em></p>
+<p>Same model. Different context windows. Entirely different outputs. The second clinician did not use a better tool. She engineered the context.</p></div>
+<h2>What To Do</h2>
+<p>When an output disappoints, run through the four primitives before blaming the tool:</p>
+<ol>
+<li><strong>Prediction problem?</strong> The task may be outside what pattern completion can reliably do. Judgment calls, novel synthesis, and decisions requiring facts the model was never trained on are prediction-limited.</li>
+<li><strong>Context problem?</strong> Is the relevant information actually in the window? If you did not put it there, it is not there.</li>
+<li><strong>Token problem?</strong> Is the input too long, the output getting cut off, or the window too small? Trim the input or break the task.</li>
+<li><strong>Prompt problem?</strong> Are the instructions specific? Is the output format defined? Are there examples? Vague input produces confident, generic output.</li>
+</ol>
+<p>Most failures are context problems. Knowing this is worth knowing.</p>
+<h2 class="rh">How It Fails</h2>
+<p>Clinicians assume the model knows things it cannot know. They ask about their patient without describing the patient. They ask about their hospital's protocol without providing it. They ask follow-up questions as if the model remembers the last session. It does not. The output arrives fluent and confident either way. Fluency carries no information about accuracy. The model predicts what a correct-sounding answer looks like, not whether the answer is correct. This is not a flaw to be patched in the next version. It is the mechanism.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#context-is-everything">Context Is Everything</a><a class="xt" href="#prompting-is-a-consult">Prompting Is a Consult</a><a class="xt" href="#grounding-and-rag">Grounding &amp; RAG</a><a class="xt" href="#judging-the-output">Judging the Output</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#the-five-minute-model"><span class="nd">&#8592; Previous</span><span class="nt">The Five-Minute Model</span></a><a class="anb nr" href="#confabulation"><span class="nd">Next &#8594;</span><span class="nt">Confabulation: Why Models Make Things Up</span></a></nav>
+</div>
+</article>
+
+<article id="confabulation" class="page" data-title="Confabulation: Why Models Make Things Up">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">How It Works</span><span class="badge b3">This Week</span><span class="rt">3 min read</span></div>
+<h1 class="at">Confabulation: Why Models Make Things Up</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">The model does not lie and does not know it is wrong. It fills gaps with plausible text because filling gaps with plausible text is the only thing it does.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>The industry calls it hallucination. The better clinical word is confabulation: confident, coherent, fabricated detail produced without any awareness of the fabrication. Like a Korsakoff patient telling you about the breakfast he did not eat, the model is not deceiving you. It is completing a pattern.</p>
+<p>The mechanism matters. The model generates the most plausible next word given the window. When the true answer was common in its training data, the most plausible continuation is usually also the correct one. When the true answer is rare, absent, or specific to your patient, the model does not stop. It cannot stop. It produces what a correct answer would look like: a citation with a real journal name and a fabricated page range, a drug interaction that sounds right, a statistic with one decimal place of false precision.</p>
+<p>The output quality is identical in both cases. That is the trap. There is no change in tone, no hedge, no flag. The fabricated citation is formatted exactly like the real one because both were produced by the same process: predicting what citations look like.</p>
+<p><strong>Confabulation concentrates at the edges.</strong> Common knowledge is reproduced reliably. Specifics fail first: exact doses, exact citations, exact numbers, recent events, rare diseases, your institution's protocols.</p>
+<p><strong>Grounding reduces it, nothing eliminates it.</strong> Giving the model the source document to work from (see D7) cuts fabrication sharply, because the right answer is now in the window. It does not cut it to zero.</p>
+<div class="callout cf"><div class="cl">Failure Mode</div><p>Confabulation is most dangerous when the answer is formatted perfectly. The danger signal is not weirdness. The danger signal is an exact dose, citation, number, or named fact that you did not provide and have not checked.</p></div>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>A resident asks a chatbot for the evidence behind a TXA indication and gets three citations. Two are real. The third has a real journal, a plausible author list, a year that fits, and a DOI that resolves to nothing. It survived two readers because everything about it was formatted like truth. It was caught at the journal-submission stage by an editor who looked it up.</p>
+<p>Nothing about the fake citation looked different. That is the point. It was produced by the same machinery as the real ones.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Verify every fact the model produced that you did not supply. Citations, numbers, doses, named studies. Every one, not a sample.</li>
+<li>Expect fabrication where specifics meet rarity. The more precise and less common the claim, the higher the prior that it is confabulated.</li>
+<li>Ground when you can. If a source document exists, put it in the window and ask the model to answer from it.</li>
+<li>Never use absence of hedging as reassurance. The model hedges when hedging is the plausible pattern, not when it is uncertain.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Clinicians learn about hallucination, catch one fake citation early, and conclude they can spot them. They cannot, and neither can anyone else, because there is nothing to spot. The fabrication is constructed from the same patterns as the truth. Detection by inspection fails by design. The only reliable detector is checking the claim against something real. The cost of believing you have a feel for it is the fourth citation, the one you did not check, in the manuscript with your name on it.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-four-primitives">The Four Primitives</a><a class="xt" href="#grounding-and-rag">Grounding &amp; RAG</a><a class="xt" href="#judging-the-output">Judging the Output</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#the-four-primitives"><span class="nd">&#8592; Previous</span><span class="nt">The Four Primitives</span></a><a class="anb nr" href="#training-data-and-the-cutoff"><span class="nd">Next &#8594;</span><span class="nt">Training Data &amp; the Cutoff</span></a></nav>
+</div>
+</article>
+
+<article id="training-data-and-the-cutoff" class="page" data-title="Training Data &amp; the Cutoff">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">How It Works</span><span class="badge b2">This Quarter</span><span class="rt">3 min read</span></div>
+<h1 class="at">Training Data &amp; the Cutoff</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">The model's knowledge is a frozen snapshot of its training data: enormous, uneven, and ending months before today. Anything after the cutoff, and anything underrepresented before it, has to come through the window.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>A model learns during training, once, on a fixed corpus of text. After that, its weights are frozen. Using the model does not teach it anything. Your conversations do not update it. The next version of the model is a new training run, not your model having learned.</p>
+<p>Three properties of that snapshot matter clinically.</p>
+<p><strong>It has a date.</strong> Every model has a knowledge cutoff, typically six to eighteen months before you are using it. A guideline revised after the cutoff does not exist for the model, and the model will not tell you that. Asked about current recommendations, it confidently produces the recommendations that were current when its data ended.</p>
+<p><strong>It is uneven.</strong> The training corpus is the internet plus licensed text. Common conditions, US-centric practice, and well-published topics are densely represented. Rare diseases, local practice patterns, and non-English literature are thin. Where the data is thin, prediction degrades and confabulation rises. The model's competence map does not match the textbook's table of contents, and there is no legend telling you which regions are thin.</p>
+<p><strong>It absorbed the disagreements.</strong> The corpus contains contradicting guidelines, outdated practices, and confident wrong answers. On settled questions, the average is fine. On contested ones, you can get either side of the argument depending on how you phrase the question.</p>
+<p>The fix for all three is the same: anything time-sensitive, local, or contested goes in the window. Current guideline, your protocol, the actual paper. The window overrides the snapshot.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>A hospitalist asks a chatbot for the current anticoagulation recommendation in a scenario where the major society guideline changed eight months ago. The model gives the old recommendation, fluently, with the old rationale. Nothing in the answer says "as of my training data." The answer was correct in the year the model was trained. The patient is being treated in this one.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Know the cutoff of the tools you use, the way you know a reference book's edition year.</li>
+<li>For anything guideline-driven, supply the guideline. Do not ask the model what is current; tell it what is current and ask it to apply it.</li>
+<li>Treat rare-disease and niche-topic output with a higher index of suspicion. Thin training data is where fabrication concentrates.</li>
+<li>Remember the model does not learn from you. The correction you gave it yesterday is gone. If a correction must persist, it belongs in your standing instructions (D6).</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>The failure is silent staleness. The model never says "my information may be outdated" unless that phrase happens to be the plausible pattern, and a stale answer reads exactly like a current one. Clinicians who would never quote a 2019 guideline will accept a chatbot answer without asking what edition it was trained on. The cost arrives when practice has moved and the model has not, on exactly the kind of question where you reached for the tool because you had not kept up either.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-four-primitives">The Four Primitives</a><a class="xt" href="#confabulation">Confabulation</a><a class="xt" href="#context-is-everything">Context Is Everything</a><a class="xt" href="#standing-orders">Standing Orders</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#confabulation"><span class="nd">&#8592; Previous</span><span class="nt">Confabulation: Why Models Make Things Up</span></a><a class="anb nr" href="#the-wrapper-is-not-the-model"><span class="nd">Next &#8594;</span><span class="nt">The Wrapper Is Not the Model</span></a></nav>
+</div>
+</article>
+
+<article id="the-wrapper-is-not-the-model" class="page" data-title="The Wrapper Is Not the Model">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">How It Works</span><span class="badge b2">This Quarter</span><span class="rt">3 min read</span></div>
+<h1 class="at">The Wrapper Is Not the Model</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">Your scribe, your inbox drafter, and the chatbot on your phone may all be the same model wearing different clothes. The wrapper decides what goes in the window, and the wrapper can change without telling you.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Almost no clinical AI product is a model. It is a wrapper around one: a layer of software that takes your input, adds its own instructions and context, sends the package to a general-purpose model, and formats what comes back.</p>
+<p>What the wrapper controls is exactly the list of things that determine output quality.</p>
+<p><strong>The hidden instructions.</strong> Every product front-loads the window with a system prompt you never see: the tone, the guardrails, the format, the things it refuses to do. Two products on the same model behave differently because their hidden instructions differ.</p>
+<p><strong>The context plumbing.</strong> The wrapper decides what else enters the window: the transcript from the room mic, the last three messages of the patient thread, a retrieved chunk of your formulary. When a product "knows" something, the wrapper put it there.</p>
+<p><strong>The model behind the curtain.</strong> Vendors swap underlying models for cost or capability, often silently. The product that performed one way in the demo may be running different machinery by go-live, or by next quarter.</p>
+<p><strong>The update cadence.</strong> Wrapper updates change behavior too: a new feature, a new default, a reworded hidden prompt. The tool you validated is a moving target.</p>
+<p>None of this is scandal. It is how the industry works. But it means your trust should attach to a product version at a point in time, not to a brand name. A vendor who cannot answer "what model is this and what gets sent to it" has told you something.</p>
+<div class="callout ci"><div class="cl">Clinical Translation</div><p>The wrapper is the hospital workflow. The model is the underlying physiology. Same physiology, different workflow, different outcome. Ask what data enters the wrapper and what model sits underneath it.</p></div>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>Your hospital pilots an AI scribe in March. It performs well. In August, notes start running longer, with a new tendency to insert pertinent negatives nobody said aloud. Nothing in your workflow changed. The vendor had switched underlying models in a routine update, announced in a release note nobody clinical ever sees. The product name, the interface, and your habits were identical. The machinery was not.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>For any tool touching patient care, find out what it sends, where, and to which model. This belongs in procurement questions, not fine print.</li>
+<li>Date your trust. "This tool was reliable on my cases as of version X" is a real statement. "This tool is reliable" is not.</li>
+<li>Watch for behavior drift after updates, and treat drift as a signal to re-verify, not a quirk to ignore.</li>
+<li>When a tool behaves strangely, remember you can only see your input, not the full window. The hidden instructions may be fighting your request.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Trust gets attached to the brand and then auto-renews. The tool earned confidence in month one, and that confidence silently extends across model swaps, prompt rewrites, and feature changes, none of which were announced in any channel a clinician reads. The cost is a validated workflow that is no longer the workflow you validated, discovered only when the output quality drops far enough to be visible, which is far past where it started to matter.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-four-primitives">The Four Primitives</a><a class="xt" href="#from-prompts-to-pipelines">Prompts to Pipelines</a><a class="xt" href="#standing-orders">Standing Orders</a><a class="xt" href="#the-signature-rule">The Signature Rule</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#training-data-and-the-cutoff"><span class="nd">&#8592; Previous</span><span class="nt">Training Data &amp; the Cutoff</span></a><a class="anb nr" href="#same-question-different-answer"><span class="nd">Next &#8594;</span><span class="nt">Same Question, Different Answer</span></a></nav>
+</div>
+</article>
+
+<article id="same-question-different-answer" class="page" data-title="Same Question, Different Answer">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">How It Works</span><span class="badge b2">This Quarter</span><span class="rt">3 min read</span></div>
+<h1 class="at">Same Question, Different Answer</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">The model is probabilistic. Ask the same question twice and you can get different answers, both fluent, both confident. Consistency is something you engineer, not something you get.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Prediction does not mean picking one fixed answer. At every word, the model holds a probability distribution over what comes next, and most products sample from it. A setting called temperature controls how adventurous the sampling is. You usually cannot see or set it in clinical products.</p>
+<p>The consequence: the same prompt, run twice, can produce different outputs. Usually the differences are cosmetic. Sometimes they are not. A borderline judgment call can land on different sides on different runs, because the underlying distribution was genuinely split and the sampler broke the tie differently each time.</p>
+<p>Three clinical implications:</p>
+<p><strong>A single output is a single draw.</strong> You saw one sample from a distribution, not the model's verdict. If the question is consequential and the answer surprising, asking again is cheap and informative. Wide variation across runs is the closest thing the model has to telling you it is uncertain.</p>
+<p><strong>Reproducibility is not guaranteed.</strong> The output you verified yesterday is not binding on the output generated today, even with an identical prompt.</p>
+<p><strong>Variation compounds with everything else that moves.</strong> Sampling variability sits on top of model swaps and wrapper updates. A workflow can drift for three different reasons that all look the same from the outside.</p>
+<p>The mitigation is structural. Templates, standing instructions, and grounding documents narrow the distribution by constraining the window. The tighter the input, the less room the sampler has to wander.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>A residency program uses a chatbot to generate practice oral-board cases. Two residents enter the identical prompt. One gets a case where the examiner expects early intubation; the other gets the same stem resolving with noninvasive ventilation. Neither output is wrong. The prompt underdetermined the answer, and the sampler filled the gap differently each time. The residents spend the next hour arguing about which one is "what the AI says." There is no "what the AI says." There are draws.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>For consequential, borderline questions, run the prompt more than once. Agreement across runs is mild reassurance; disagreement is a flag that the question is underdetermined or contested.</li>
+<li>Never cite a single chatbot output as "the AI's answer" in a clinical discussion. It is one sample.</li>
+<li>For anything you reuse, freeze the output, not the prompt. Verify a specific text once and save that text. Regenerating is re-rolling.</li>
+<li>Constrain when consistency matters: templates, examples, source documents in the window.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>The failure is treating the model as an oracle with one answer per question. A clinician verifies an output, trusts the prompt that produced it, and shares the prompt with colleagues as if it were the verified artifact. Each colleague now generates their own unverified draw and attributes the original verification to it. The cost is a department full of people who believe they are using a vetted tool, holding outputs nobody vetted.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-four-primitives">The Four Primitives</a><a class="xt" href="#the-wrapper-is-not-the-model">The Wrapper</a><a class="xt" href="#from-prompts-to-pipelines">Prompts to Pipelines</a><a class="xt" href="#the-iteration-loop">The Iteration Loop</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#the-wrapper-is-not-the-model"><span class="nd">&#8592; Previous</span><span class="nt">The Wrapper Is Not the Model</span></a><a class="anb nr" href="#the-4d-model"><span class="nd">Next &#8594;</span><span class="nt">The 4D Model</span></a></nav>
+</div>
+</article>
+
+<article id="the-4d-model" class="page" data-title="The 4D Model">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The 4D Framework</span><span class="badge b3">This Week</span><span class="rt">3 min read</span></div>
+<h1 class="at">The 4D Model</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">Every AI interaction is four decisions. Most clinicians only make one. The other three are where the harm lives.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>When you hand a task to AI, you are making four consecutive decisions whether you realize it or not.</p>
+<p><strong>Delegation.</strong> Should this go to AI at all, and in which mode? Not every task belongs there. Of the ones that do, some should be automated with verification, some require you and the model working together, and some should never run without you in the loop at every step.</p>
+<p><strong>Description.</strong> What exactly are you asking for, and does the model have everything it needs to do it? This is the prompt, plus the context behind it. Most clinicians start here. It is the third most important decision.</p>
+<p><strong>Discernment.</strong> Is what came back actually correct? Fluent is not accurate. Complete-looking is not complete. Appropriate for a generic patient is not appropriate for yours.</p>
+<p><strong>Diligence.</strong> You own the output the moment you use it. Verification scales with stakes. Your name on a document means you are accountable for every sentence in it, regardless of who or what drafted it.</p>
+<p>The three modes of delegation:</p>
+<ul>
+<li><strong>Automation.</strong> AI does it, you verify. Fast, appropriate for low-stakes reversible tasks.</li>
+<li><strong>Augmentation.</strong> You and AI iterate together. Right for anything patient-facing or clinically consequential.</li>
+<li><strong>Agency.</strong> AI acts in loops on your behalf with minimal check-ins. Earned, never assumed. Reserved for tasks you understand deeply enough to audit at any point.</li>
+</ul>
+<p>Mode determines how much scrutiny the other three Ds require. Pick the wrong mode and the rest of the framework fails.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>58-year-old male, Medicaid, no PCP. Chest pain workup negative. Discharging him. You open the AI tool and type: <em>"Discharge instructions for chest pain rule-out."</em></p>
+<p>The output arrives in thirty seconds: avoid strenuous activity, follow a heart-healthy diet, follow up with a cardiologist within one week, return to the ED if chest pain returns or worsens. Clean, well-formatted. You sign it. He goes home.</p>
+<p>What the model did not know: there are no cardiology appointments available for six weeks. He does not have transportation. He does not know "return to the ED" is a real instruction. And he does not know what symptoms should actually bring him back, because the instruction used the same words as his original complaint.</p>
+<p>Walk it back through the four Ds. <strong>Delegation:</strong> you used automation for an augmentation task. <strong>Description:</strong> no patient context in the prompt. <strong>Discernment:</strong> you asked whether it looked right, not whether it was right for him. <strong>Diligence:</strong> you signed it. It is yours.</p></div>
+<h2>What To Do</h2>
+<p>Before you open the tool, answer two questions:</p>
+<ol>
+<li>Can I verify this output against something real?</li>
+<li>Do I own the consequence if it is wrong?</li>
+</ol>
+<p>If both answers are yes, you are in the right place. Now pick your mode. Patient-facing clinical content defaults to augmentation until you have characterized how the tool performs on your patient population.</p>
+<p>When you prompt, put the patient in the window. Not the generic patient. This one: age, relevant history, the actual follow-up plan that exists, the thing they need to understand to stay safe.</p>
+<h2 class="rh">How It Fails</h2>
+<p>Clinicians treat Description as the whole framework. They learn to write better prompts and assume that solves the problem. It improves the output. It does not replace the other three decisions. The published AI harms in medicine are not mostly prompting failures. They are Delegation failures (wrong mode, wrong task) and Diligence failures (signed without verification). The prompt was often fine. The decision around it was not.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-four-primitives">The Four Primitives</a><a class="xt" href="#the-delegation-decision">Delegation Decision</a><a class="xt" href="#stakes-and-reversibility">Stakes &amp; Reversibility</a><a class="xt" href="#prompting-is-a-consult">Prompting</a><a class="xt" href="#judging-the-output">Judging Output</a><a class="xt" href="#the-signature-rule">Signature Rule</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#same-question-different-answer"><span class="nd">&#8592; Previous</span><span class="nt">Same Question, Different Answer</span></a><a class="anb nr" href="#the-delegation-decision"><span class="nd">Next &#8594;</span><span class="nt">The Delegation Decision</span></a></nav>
+</div>
+</article>
+
+<article id="the-delegation-decision" class="page" data-title="The Delegation Decision">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The 4D Framework</span><span class="badge b3">This Week</span><span class="rt">3 min read</span></div>
+<h1 class="at">The Delegation Decision</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">Triage the task before you hand it off: can I verify this output, and do I own the consequence? Two yeses and it can go to the model. Anything else stays with you.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Delegation is the first decision and the one most often skipped. The tool is open, the task is annoying, so the task goes in. That is not a decision. That is a reflex.</p>
+<p>What models do well maps to a short list: transformation (this format into that format), summarization, drafting, pattern recall, translation between registers. The common thread is that the source material exists and the output can be checked against it.</p>
+<p>What you keep is non-negotiable: final clinical judgment, anything you cannot verify, anything you would not sign.</p>
+<p>The screen is two questions.</p>
+<p><strong>Can I verify this output against something real?</strong> Not "does it look right." Verify, against the chart, the source document, your own knowledge, a reference. If no ground truth exists for you to check against, you cannot discern (D8), which means errors pass through you untouched. A task you cannot verify is a task you cannot delegate, no matter how good the tool is.</p>
+<p><strong>Do I own the consequence if it is wrong?</strong> If yes, the task can still go to the model, but the verification burden is yours and it scales with the stakes (D2). If you are tempted to delegate specifically because you do not want to own the output, stop. That is the clearest contraindication there is.</p>
+<p>The screen sorts by verifiability, not difficulty. Some easy-feeling tasks fail the screen. Some hard-feeling ones pass.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>Two residents, same shift, same tool.</p>
+<p>The first has a transfer patient with a med list from three sources. She pastes all three in and asks for a reconciled summary table, then checks the table against the sources. Transformation of material she provided, verified against ground truth she holds. Good delegation. It saved her twenty minutes and the verification took three.</p>
+<p>The second has a complex dosing question on a patient with interacting comorbidities. He asks the model what dose to give. The answer is specific and confident. But he asked precisely because he did not know, which means he cannot verify the answer; he can only find it plausible. The task that drove him to the tool is the exact task the screen excludes.</p>
+<p>Same tool. The difference was the decision made before typing.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Run the two-question screen before you open the window: can I verify it, do I own it.</li>
+<li>If you cannot verify, do not delegate the answer. You can still delegate the legwork around it: summarize the relevant guideline you provide, draft the consult question. Keep the judgment.</li>
+<li>If the reason you want to delegate is fatigue with the consequence, treat that as a red flag, not a use case.</li>
+<li>Passed the screen? Now pick the mode (automation, augmentation, agency) using stakes and reversibility (D2).</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>The dangerous tasks are the ones that feel verifiable but are not. A summary of a chart you have not read feels checkable; checking it requires reading the chart, which is the work you delegated away. Fluent output masks unverifiable content, and "I would have caught it" goes untested because nothing forces the catch. The cost is errors that read as polished, passing through a clinician who believed they were the safety check while doing none of the checking.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-4d-model">The 4D Model</a><a class="xt" href="#stakes-and-reversibility">Stakes &amp; Reversibility</a><a class="xt" href="#judging-the-output">Judging Output</a><a class="xt" href="#the-signature-rule">Signature Rule</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#the-4d-model"><span class="nd">&#8592; Previous</span><span class="nt">The 4D Model</span></a><a class="anb nr" href="#stakes-and-reversibility"><span class="nd">Next &#8594;</span><span class="nt">Stakes &amp; Reversibility</span></a></nav>
+</div>
+</article>
+
+<article id="stakes-and-reversibility" class="page" data-title="Stakes &amp; Reversibility">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The 4D Framework</span><span class="badge b3">This Week</span><span class="rt">3 min read</span></div>
+<h1 class="at">Stakes &amp; Reversibility</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">Cross stakes against reversibility before you pick a mode. Low-stakes and reversible: automate freely. High-stakes or committed: you stay in the loop, fully. Agency is earned, never default.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Once a task passes the delegation screen (D1), the question becomes how much supervision it runs under. Two axes answer it.</p>
+<p><strong>Stakes.</strong> Who gets hurt if this is wrong, and how badly? Internal scaffolding sits low. Anything patient-facing sits high, automatically.</p>
+<p><strong>Reversibility.</strong> Is the output a draft you will review before it becomes real, or a committed action? A drafted message is reversible until sent. A sent message, a signed note, an order placed: committed.</p>
+<p>Cross them and the modes assign themselves:</p>
+<ul>
+<li><strong>Low stakes, reversible:</strong> automation. Let the model run, verify on review. This is where the time savings live.</li>
+<li><strong>High stakes, reversible:</strong> augmentation. You and the model iterate; the draft never becomes real without your full review. Patient-facing content lives here.</li>
+<li><strong>Low stakes, committed:</strong> automation with a sampling audit. Fine until volume makes errors compound.</li>
+<li><strong>High stakes, committed:</strong> the danger quadrant. If an AI output becomes a committed, patient-affecting action without a human between draft and commitment, you have built a machine that acts in your name without you. Augmentation only, full verification, or do not do it at all.</li>
+</ul>
+<p>Tasks move. Re-run the grid when anything changes, especially the tool itself.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>Your inbox tool drafts replies to patient messages. As shipped, it is high-stakes but reversible: every draft waits for your edit and your send. Augmentation. Fine.</p>
+<p>A quarterly update adds a convenience feature: messages classified as routine can be auto-sent. One toggle, default on for "low-risk" categories. The task did not change. The tool moved it from reversible to committed, and the classifier deciding what counts as routine is itself a model output nobody is reviewing.</p>
+<p>The patient who messages "still having the chest tightness but the appointment portal isn't working" and gets an auto-sent scheduling reply is the cost of a quadrant change you never agreed to.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Place the task on the grid before picking a mode. Two questions: who gets hurt, and is there a review between output and reality?</li>
+<li>Default patient-facing content to augmentation, regardless of how reliable the tool has been.</li>
+<li>Audit your committed-action surfaces. List every place an AI output can become real without your eyes on it. That list should be short, deliberate, and known to you.</li>
+<li>Re-run the grid after every tool update. Read the release notes for one thing only: did anything move from draft to auto?</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Tools quietly move your tasks between quadrants. A draft feature becomes an auto-send feature in an update. A suggestion becomes a default. A default becomes an action. Each step ships as convenience, each is individually small, and the sum is a committed pipeline where there used to be a checkpoint. The cost is a committed action you never reviewed, discovered after it reached a patient, with your name attached because the toggle was in your settings.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-delegation-decision">Delegation Decision</a><a class="xt" href="#from-prompts-to-pipelines">Prompts to Pipelines</a><a class="xt" href="#the-signature-rule">Signature Rule</a><a class="xt" href="#the-wrapper-is-not-the-model">The Wrapper</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#the-delegation-decision"><span class="nd">&#8592; Previous</span><span class="nt">The Delegation Decision</span></a><a class="anb nr" href="#from-prompts-to-pipelines"><span class="nd">Next &#8594;</span><span class="nt">From Prompts to Pipelines</span></a></nav>
+</div>
+</article>
+
+<article id="from-prompts-to-pipelines" class="page" data-title="From Prompts to Pipelines">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The 4D Framework</span><span class="badge b2">This Quarter</span><span class="rt">2 min read</span></div>
+<h1 class="at">From Prompts to Pipelines</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">When a task recurs three times, stop re-prompting and build a pipeline: fixed steps, fixed inputs, and one named place where a human verifies. Loops amplify quality and error equally.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>A prompt is a one-off conversation. A pipeline is a saved, repeatable workflow: the same instructions, the same input format, the same checks, run every time the task comes around. The third time you find yourself reconstructing the same prompt from memory, you have found a pipeline candidate.</p>
+<p>The upgrade buys three things: consistency (the prompt that worked is frozen), quality (you tune the instructions once, properly), and a defined verification point (the pipeline has one step, named in advance, where a human checks output against ground truth).</p>
+<p>The agentic version goes further. An agent runs a loop: plan the step, act, observe the result, feed it back into the window, repeat. Understand what the loop does to error: each cycle's output becomes the next cycle's input. A small mistake in step two is the foundation everything after it was built on. Loops amplify whatever they are given.</p>
+<div class="callout cf"><div class="cl">Failure Mode</div><p>An agent is a pipeline that can keep acting. One bad extraction early can become a polished final report five steps later. Verify the system, not just individual outputs.</p></div>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>The monthly QI data pull: door-to-needle times, formatted into the committee table. Done as a pipeline, it is a saved workflow: same extraction steps, same prompt file, same output template, and one defined check before the table goes out: spot-validate five cases against the chart.</p>
+<p>Month four, the source report adds a column and shifts the rest. The pipeline does not error. It produces a clean, plausible table with the wrong values in two fields. The five-case check catches it in ninety seconds. Without it, the committee acts on a quarter of quiet garbage.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Apply the rule of three: third recurrence, save it as a pipeline. Write the prompt down, fix the input format, store both where you will find them.</li>
+<li>Name the verification step when you build it, not after. Decide what gets checked against what, every run.</li>
+<li>Schedule re-validation. Monthly pipelines get a quarterly deep check against ground truth.</li>
+<li>Before granting any tool an agentic loop, ask whether you could audit it mid-run. If you cannot tell a healthy run from a sick one, you are not ready to delegate the loop.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Pipelines fail by succeeding. The workflow runs clean for six months, the verification step starts feeling like ritual, and it gets skipped. Then a model update or a source change degrades the output, silently, and nobody is watching a thing that "already works." The cost is weeks of bad numbers with your name on them, discovered from the audience, not from you.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-delegation-decision">Delegation Decision</a><a class="xt" href="#stakes-and-reversibility">Stakes &amp; Reversibility</a><a class="xt" href="#the-wrapper-is-not-the-model">The Wrapper</a><a class="xt" href="#same-question-different-answer">Same Question</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#stakes-and-reversibility"><span class="nd">&#8592; Previous</span><span class="nt">Stakes &amp; Reversibility</span></a><a class="anb nr" href="#context-is-everything"><span class="nd">Next &#8594;</span><span class="nt">Context Is Everything</span></a></nav>
+</div>
+</article>
+
+<article id="context-is-everything" class="page" data-title="Context Is Everything">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The 4D Framework</span><span class="badge b3">This Week</span><span class="rt">3 min read</span></div>
+<h1 class="at">Context Is Everything</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">The model knows exactly what is in the window right now and nothing else. Description is mostly the work of deciding what goes in the window.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>The model has no memory of your patient, your last session, or your institution. It does not know what specialty you practice, what your formulary covers, or what you meant yesterday. The context window is the whole universe: your prompt, the conversation so far, whatever you attached. If a fact is not in the window, for the purposes of this output, the fact does not exist.</p>
+<p>Clinicians find this hard to internalize because every other entity they consult has standing context. The pharmacist knows the formulary. The consultant can pull up the chart. The colleague remembers last week. The model has none of that, every single time, and gives no sign of the absence. Asked a question with missing context, it does not say "I'd need to know her creatinine." It assumes a creatinine, silently, and answers for the patient it assumed.</p>
+<p>The skill is context engineering: deciding what goes in the window. Four components, every time:</p>
+<ul>
+<li><strong>The question.</strong> What you actually want, stated as the thing it is.</li>
+<li><strong>The relevant facts.</strong> This patient, not the generic one. The values, the history, the constraints of the real situation.</li>
+<li><strong>The constraints.</strong> What must be true of the answer: reading level, formulary, your institution's pathway, what to do when uncertain.</li>
+<li><strong>The format.</strong> What the output should look like.</li>
+</ul>
+<p>Context engineering is selection in both directions: putting in what matters, leaving out what does not. More context is not always better context. Information buried in the middle of a long context window is processed less reliably. Generic out usually means generic in, but a chart dump fails for the opposite reason.</p>
+<div class="callout ci"><div class="cl">Clinical Translation</div><p>A context window is not memory. It is the information on the screen right now. If a brilliant consultant could not answer from that packet alone, the model will fill the missing pieces with assumptions.</p></div>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>The same question, asked twice.</p>
+<p>Bare: <em>"Outpatient treatment for community-acquired pneumonia?"</em> The answer is competent and generic: amoxicillin or doxycycline for healthy adults. True, generic, and useless at the bedside, because the decision was never "what does the guideline say."</p>
+<p>With the window loaded: <em>"68-year-old woman, CAP confirmed on imaging, CURB-65 of 1. COPD on tiotropium, eGFR 38, on warfarin for afib. Lives alone, reliable daughter nearby, can afford generics only. Recommend an outpatient regimen and flag interactions with her med list."</em></p>
+<p>Now the output engages the actual problem: the warfarin interaction that rules out the macrolide route, the renal dosing, the COPD that changes her risk class. Same model. Same disease. The second answer exists because the second patient does.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Before sending, audit the window: could a brilliant stranger answer correctly with only what is on this screen? If not, the gap becomes an assumption in the output.</li>
+<li>Load the four components: question, relevant facts, constraints, format.</li>
+<li>Select, do not dump. The relevant labs, not the chart. The pathway section that applies, not the binder.</li>
+<li>Start a fresh session when the topic changes. A long conversation full of dead ends is a heavy window.</li>
+<li>When output goes generic, fix the window before blaming the model. Generic out usually means generic in.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>You assume it remembers. It does not. The clinician who described the patient thoroughly on Tuesday asks a follow-up on Wednesday, in a new session, and gets an answer for nobody. Or the same failure inside one session: the conversation drifted long, the early details fell out of the window, and the model is now answering from a digest it never announced it was making. The cost is the same: advice generated for a generic patient, applied to yours.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-four-primitives">The Four Primitives</a><a class="xt" href="#prompting-is-a-consult">Prompting</a><a class="xt" href="#standing-orders">Standing Orders</a><a class="xt" href="#grounding-and-rag">Grounding &amp; RAG</a><a class="xt" href="#judging-the-output">Judging Output</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#from-prompts-to-pipelines"><span class="nd">&#8592; Previous</span><span class="nt">From Prompts to Pipelines</span></a><a class="anb nr" href="#prompting-is-a-consult"><span class="nd">Next &#8594;</span><span class="nt">Prompting Is a Consult</span></a></nav>
+</div>
+</article>
+
+<article id="prompting-is-a-consult" class="page" data-title="Prompting Is a Consult">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The 4D Framework</span><span class="badge b3">This Week</span><span class="rt">3 min read</span></div>
+<h1 class="at">Prompting Is a Consult</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">Prompt like you are consulting a brilliant colleague who has never met your patient and forgets everything when the call ends. You already know how to do this. You do it every shift.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>You have been trained in exactly this skill. A good consult request names who you are, who the patient is, what you need, and by when. A bad one is "patient in 12, can you take a look?" The consultant's quality matters less than the quality of the question, and every clinician learns this in the first month of residency.</p>
+<p>A prompt is a consult to a colleague with two specific impairments: total amnesia and no access to the chart. Structure the call accordingly. Five parts:</p>
+<ul>
+<li><strong>Role.</strong> Who the model should be: "You are reviewing this as an EM attending writing for a patient with a sixth-grade reading level." Role sets register, depth, and what gets assumed versus explained.</li>
+<li><strong>Context.</strong> The patient, the situation, the documents. Everything from D4. This is the bulk of a good prompt.</li>
+<li><strong>Task.</strong> The specific ask, as a verb: draft, compare, extract, translate, critique. "Thoughts on this?" is not a task. Consultants hate that question and the model handles it worse.</li>
+<li><strong>Constraints.</strong> The hard rules: formulary, length, reading level, what to exclude, what to do with uncertainty ("if information is missing, ask rather than assume").</li>
+<li><strong>Output format.</strong> What the deliverable looks like: a table with these columns, a paragraph for the chart, a list ordered by urgency.</li>
+</ul>
+<p>Two principles govern all five. Specificity beats length: ten precise lines outperform forty vague ones. And examples beat adjectives: "warm but direct, like this: [example]" outperforms three sentences describing the tone you want.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>Weak: <em>"Write discharge instructions for a diabetic foot infection."</em> The output is competent and generic: keep the wound clean, take your antibiotics, follow up with your doctor.</p>
+<p>Strong: <em>"You are an EM attending writing discharge instructions at a sixth-grade reading level. Patient: 52-year-old man, new diabetic foot ulcer, started on amoxicillin-clavulanate, works on his feet as a line cook, lives alone. Wound care follow-up is in 3 days at our clinic. Task: write discharge instructions covering wound care he can do alone, work modification, and the specific foot findings that mean return to the ED now. Constraints: no medical jargon, under 250 words. Format: short paragraphs with bolded warning signs."</em></p>
+<p>The second output tells a line cook how to stay off the foot at a job that does not allow it. Same model. The difference is that the second one received a consult and the first received a topic.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Build the prompt in five parts: role, context, task, constraints, format. Out loud or on the screen, same order every time, until it is automatic.</li>
+<li>Replace adjectives with examples wherever output quality matters. One sample of the format you want is worth a paragraph describing it.</li>
+<li>Add the uncertainty constraint to anything clinical: "if you are missing information you need, ask me instead of assuming."</li>
+<li>Read your prompt back as if you were the consultant receiving it. If you would page back with questions, the model needed those answers too.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Vague prompts return confident, generic answers, and the confidence gets mistaken for quality. The clinician gets a fluent reply to a lazy prompt, concludes the tool works fine, and never learns what the strong version would have produced. There is no error message for a weak consult. The cost is generic medicine dressed as tailored advice, delivered to a specific patient, indefinitely.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#context-is-everything">Context Is Everything</a><a class="xt" href="#standing-orders">Standing Orders</a><a class="xt" href="#judging-the-output">Judging Output</a><a class="xt" href="#the-iteration-loop">Iteration Loop</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#context-is-everything"><span class="nd">&#8592; Previous</span><span class="nt">Context Is Everything</span></a><a class="anb nr" href="#standing-orders"><span class="nd">Next &#8594;</span><span class="nt">Standing Orders for Your AI</span></a></nav>
+</div>
+</article>
+
+<article id="standing-orders" class="page" data-title="Standing Orders for Your AI">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The 4D Framework</span><span class="badge b2">This Quarter</span><span class="rt">2 min read</span></div>
+<h1 class="at">Standing Orders for Your AI</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">Anything you find yourself typing into every prompt belongs in an instruction file: the standing orders your AI runs under by default, written once, enforced every time.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Every serious AI tool has a place for persistent instructions: custom instructions in the chatbot, project files, system prompts. Whatever the name, the mechanism is the same. The contents get loaded into the context window at the start of every session, before you type anything. It is the one exception to "the model remembers nothing": not memory, but a protocol sheet taped to the inside of the door.</p>
+<p>Three categories belong in the file:</p>
+<ul>
+<li><strong>Your role.</strong> Who you are, what you practice, who you write for. "EM attending, academic site, writes patient materials at a sixth-grade level." Every output calibrates against this without being told.</li>
+<li><strong>Your defaults.</strong> Format and style preferences: concise over thorough, tables for comparisons, generic drug names, US units.</li>
+<li><strong>Your hard rules.</strong> The non-negotiables: never include patient identifiers, flag uncertainty explicitly instead of guessing, cite a source or say there is none, ask before assuming missing clinical values.</li>
+</ul>
+<p>The payoff is consistency under fatigue. At hour ten of a shift you will not remember to add "flag your uncertainty" to a prompt. The file does not get tired. Keep it short: a page of rules you mean beats five pages of rules you copied.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>A hospitalist sets three hard rules in her chatbot's custom instructions: no PHI in any output even if I paste it in carelessly; flag any claim you are uncertain about with [VERIFY]; if I ask a clinical question without the values you need, ask for them instead of assuming.</p>
+<p>Two weeks later, tired, she pastes a dosing question without the weight. The model does not produce a confident answer for an assumed 70-kilogram patient. It asks for the weight. The rule fired exactly when she was least likely to have typed it. That is the entire value proposition.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Watch your own prompts for a week. Anything you type more than twice goes in the file.</li>
+<li>Write three sections: role, defaults, hard rules. Keep it under a page.</li>
+<li>Write safety rules in imperative, testable language. "Flag uncertainty with [VERIFY]" is enforceable. "Be careful about accuracy" is decoration.</li>
+<li>Test the rules on purpose. Paste a fake identifier, ask an underdetermined question, and watch what happens.</li>
+<li>Re-read the file quarterly. Your defaults drift, and stale instructions conflict with new habits.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Instructions silently conflict with a specific request, and the model picks one without telling you. Worse, a sufficiently insistent prompt can override "always flag uncertainty," and nothing announces the override. The cost is a rule you thought was enforced, was not, discovered only when the output it should have caught gets through. Standing orders reduce reliance on vigilance. They do not retire it.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#context-is-everything">Context Is Everything</a><a class="xt" href="#prompting-is-a-consult">Prompting</a><a class="xt" href="#training-data-and-the-cutoff">Training Data</a><a class="xt" href="#the-wrapper-is-not-the-model">The Wrapper</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#prompting-is-a-consult"><span class="nd">&#8592; Previous</span><span class="nt">Prompting Is a Consult</span></a><a class="anb nr" href="#grounding-and-rag"><span class="nd">Next &#8594;</span><span class="nt">Grounding: RAG &amp; the Second Brain</span></a></nav>
+</div>
+</article>
+
+<article id="grounding-and-rag" class="page" data-title="Grounding: RAG &amp; the Second Brain">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The 4D Framework</span><span class="badge b2">This Quarter</span><span class="rt">3 min read</span></div>
+<h1 class="at">Grounding: RAG &amp; the Second Brain</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">Grounding means the model answers from documents you gave it instead of from training memory. It cuts confabulation sharply. It does not eliminate it, and it fails silently when retrieval misses.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>By default, the model answers from its training snapshot: vast, stale, and uneven (F3). Grounding changes the source. You put the authoritative document in the window and the model answers from that.</p>
+<p>The manual version you already know: attach the guideline, ask the question about the guideline. The automated version is RAG, retrieval-augmented generation. A retrieval step searches your document library for passages relevant to your question, injects the best matches into the context window, and the model answers from what was injected.</p>
+<p>Why it works: confabulation is prediction without grounding (F2). When the correct answer is sitting in the window, the most plausible continuation is overwhelmingly the text that is actually there. Fabrication drops sharply. Recency solves itself, because the document is as current as you keep it.</p>
+<p>But grounding does not give the model loyalty to the source. If retrieval pulls the wrong document, an outdated version, or nothing at all, the model answers anyway from training memory, in exactly the same voice. Grounded and ungrounded answers are indistinguishable on the surface.</p>
+<div class="callout cs"><div class="cl">Use This Today</div><p>When you attach a guideline, ask the tool to quote the exact passage it used and to say "not addressed in the source" when the answer is not in the document. Then spot-check the quote.</p></div>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>Ask a bare chatbot about your hospital's sepsis pathway and you get a plausible composite of every sepsis guideline in its training data: surviving-sepsis boilerplate, some institution's lactate cutoffs. It reads like a pathway. It is not yours.</p>
+<p>Attach the actual pathway document and ask again. Now the answer cites your cutoffs, your antibiotic choices, your escalation criteria, and when you ask something the document does not cover, a well-instructed model says the pathway does not address it. That is the difference between a tool you can use at work and a tool that generates pathway-shaped text.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>For any question with an authoritative source, ground it. Attach the document; do not trust memory, the model's or yours.</li>
+<li>Instruct the citation discipline: "answer only from the attached document, quote the relevant section, and say so explicitly if it does not cover the question."</li>
+<li>Spot-check the quotes. A quoted passage you can find in the source in ten seconds is the cheapest verification in this book.</li>
+<li>Curate the library. Retrieval is only as good as what it retrieves from: one current version of each document, old versions deleted.</li>
+<li>When a grounded tool answers something your documents do not cover, treat that as an alarm. Something answered, and it was not your library.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Retrieval pulls the wrong document, the outdated version, or nothing, and the model answers anyway from training memory without flagging the switch. The 2022 pathway that never got deleted from the library is the canonical case: retrieval found it, the model quoted it faithfully, and the output cites a source, your source, lending institutional authority to a recommendation your institution retired. The system's credibility makes the error harder to catch than a bare chatbot's would have been.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#confabulation">Confabulation</a><a class="xt" href="#training-data-and-the-cutoff">Training Data</a><a class="xt" href="#context-is-everything">Context Is Everything</a><a class="xt" href="#judging-the-output">Judging Output</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#standing-orders"><span class="nd">&#8592; Previous</span><span class="nt">Standing Orders for Your AI</span></a><a class="anb nr" href="#judging-the-output"><span class="nd">Next &#8594;</span><span class="nt">Judging the Output</span></a></nav>
+</div>
+</article>
+
+<article id="judging-the-output" class="page" data-title="Judging the Output">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The 4D Framework</span><span class="badge b3">This Week</span><span class="rt">2 min read</span></div>
+<h1 class="at">Judging the Output</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">The model answers the question you asked, for the patient you described. If you described no one, it answered for everyone. Fluency tells you nothing about accuracy. Verification is not optional.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>The model does not know what it does not know. More precisely: it has no way to flag that a critical piece of context was missing, because from its position, the context window was complete. It had everything you gave it. It answered accordingly.</p>
+<p>The harder failure is context blindness. The model answered correctly for a patient it assumed. That patient was not yours. The output looks right because it is right, for someone. Discernment is the work of determining whether that someone is the patient in front of you.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>A clinician asks an AI tool for vancomycin dosing guidance. The patient has an AKI. No creatinine was included in the prompt.</p>
+<p>The model returns a specific, formatted, confident answer. The interval is correct for moderate renal impairment, which is the most common case in the training data. The patient's creatinine puts her in severe impairment. The answer was not fabricated. It was not wrong in a way that looks wrong. It was wrong in a way that required knowing what the model was never given. Nothing in the output flagged the gap. The model had no creatinine, so it assumed one. It did not say so.</p>
+<p>The citation that does not exist is easier to catch than the dose that was almost right.</p></div>
+<h2>What To Do</h2>
+<p>Three moves, in order.</p>
+<ol>
+<li><strong>Verify everything you did not provide.</strong> Every number, every dose, every named fact the model generated without you supplying it first. Not sampled. Every one. The model's confidence carries zero information about accuracy.</li>
+<li><strong>When the output doesn't match your expectation, say so.</strong> Give the model your reasoning and ask where it diverged from yours: <em>"I would have dosed this at X given her renal function. What did you assume, and does that change your answer?"</em> The model will usually surface exactly what it was missing.</li>
+<li><strong>Calibrate over time.</strong> Track how the tool performs on your actual cases. A tool that performs well on general medicine prompts may perform differently on your patient population. You will not know until you have checked enough outputs against enough ground truth.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Verification gets sampled. The first few outputs were right, so the checking becomes lighter. Volume compounds this. The other failure is subtler: clinicians interrogate the model only when the output surprises them. If the output matches their prior, they move on. But the cases where the model's assumption aligns with yours are exactly the cases where shared blindness is possible. You both assumed the same wrong thing. Neither flagged it. Discernment is not a feeling that something looks right. It is a check against something real.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-four-primitives">The Four Primitives</a><a class="xt" href="#the-4d-model">The 4D Model</a><a class="xt" href="#context-is-everything">Context Is Everything</a><a class="xt" href="#prompting-is-a-consult">Prompting</a><a class="xt" href="#the-signature-rule">Signature Rule</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#grounding-and-rag"><span class="nd">&#8592; Previous</span><span class="nt">Grounding: RAG &amp; the Second Brain</span></a><a class="anb nr" href="#the-iteration-loop"><span class="nd">Next &#8594;</span><span class="nt">The Iteration Loop</span></a></nav>
+</div>
+</article>
+
+<article id="the-iteration-loop" class="page" data-title="The Iteration Loop">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The 4D Framework</span><span class="badge b2">This Quarter</span><span class="rt">3 min read</span></div>
+<h1 class="at">The Iteration Loop</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">The first output is a draft of your instructions, not a verdict on the tool. Iterate in order: context, then task framing, then constraints. Three failed loops means the task was mis-delegated.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Clinicians quit AI tools at exactly the wrong moment: after the first mediocre output. The first output was never going to be the deliverable. It is diagnostic information about what your instructions failed to convey, and reading it that way is the core operating skill.</p>
+<p>The loop is describe, judge, re-describe. What separates skilled iteration from flailing is knowing what to change, and the order is fixed because the failure rates are not equal.</p>
+<p><strong>Context first.</strong> Most misses are context misses (D4). The output is generic, or it answered for the wrong patient. Fix: put the missing facts in the window. Not a rephrase. Facts.</p>
+<p><strong>Task framing second.</strong> The model did the wrong job well: you wanted a critique and got a summary. Fix: restate the task as a sharper verb with a clearer deliverable (D5).</p>
+<p><strong>Constraints last.</strong> Right job, right patient, wrong shape: too long, wrong register, buried lead. Fix: add the specific constraint with an example.</p>
+<p>Know the stop rule: three iterations without convergence is not a prompting problem. It means the task was mis-delegated. Stop polishing. Go back to D1 and re-triage.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>A discharge instruction for a 74-year-old woman going home on apixaban after a new afib diagnosis, refined across three passes.</p>
+<p>Pass one: <em>"Discharge instructions for new afib started on apixaban."</em> Output: generic anticoagulation boilerplate. Diagnosis: context miss.</p>
+<p>Pass two, context added: her age, her fall last year, the stairs at home, her daughter who manages the pillbox, follow-up already booked Tuesday. Output: now about her, but a wall of paragraphs with the bleeding warning signs buried in the middle. Diagnosis: constraint miss.</p>
+<p>Pass three, constraints added: <em>"Under 200 words, sixth-grade level, bleeding warning signs as a bolded list at the top, address the fall risk directly."</em> Output: usable. Edited lightly, signed. Three passes, four minutes total.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Read a bad output as a differential, in order: missing context, wrong task framing, missing constraints. Fix the one you find, not all three at once.</li>
+<li>Make corrections specific and concrete. Name what was wrong and what right looks like.</li>
+<li>Count your iterations. At three without convergence, stop and re-run the delegation screen (D1).</li>
+<li>When an output is wrong in a surprising way, interrogate before re-rolling: "what did you assume about X?" The answer usually names the missing context.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Iteration becomes negotiation. You came in with a plan, the output disagrees, and you keep regenerating until the model produces the answer you already had. With enough iterations it always will; it is a prediction engine, and your increasingly leading prompts are the pattern it completes. The cost is the model converted into a yes-machine: a fluent second opinion that is actually your first opinion in a different font, now carrying the false weight of independent confirmation.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-delegation-decision">Delegation Decision</a><a class="xt" href="#context-is-everything">Context Is Everything</a><a class="xt" href="#prompting-is-a-consult">Prompting</a><a class="xt" href="#judging-the-output">Judging Output</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#judging-the-output"><span class="nd">&#8592; Previous</span><span class="nt">Judging the Output</span></a><a class="anb nr" href="#the-signature-rule"><span class="nd">Next &#8594;</span><span class="nt">The Signature Rule</span></a></nav>
+</div>
+</article>
+
+<article id="the-signature-rule" class="page" data-title="The Signature Rule">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The 4D Framework</span><span class="badge b3">This Week</span><span class="rt">3 min read</span></div>
+<h1 class="at">The Signature Rule</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">If your name goes on it, you verify it as if you wrote it. No tool, vendor, or institution shares your signature.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Diligence reduces to one rule, and the rule was not invented for AI. You have always been accountable for what you sign. The intern's note, the templated macro, the dictation you skimmed: your signature has always meant "I stand behind this." AI changes only the volume and the polish of what arrives for signing, and both changes push in the dangerous direction.</p>
+<p>"Human-in-the-loop" is the industry's phrase for the safety architecture, and it is worth being precise: the human in the loop is not a system feature, a workflow checkbox, or a compliance abstraction. It is you, reading the thing. A loop with an inattentive human in it has the safety properties of a loop with no human in it, plus a signature certifying otherwise.</p>
+<p>Verification scales with stakes, exactly as the D2 grid laid out. The inbox draft gets a careful proofread: is this what I would say, is anything wrong or missing? The clinical note gets line-verification: every exam finding, every dose, every statement of fact checked against what actually happened. The discharge instruction gets read as if the patient's outcome depends on it, which it does. What never appears on this scale is zero. There is no stakes level at which signing unread is a defensible act.</p>
+<p>The honest tension: verification costs time, and the tool was adopted to save time. Resolve it honestly. The tool drafts faster than you; you verify faster than you draft. The net is still positive. A workflow whose economics only work if you skip verification is not a time-saver. It is a liability with good throughput.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>An AI scribe note from a busy shift, signed unread. The note documents a complete review of systems that was never asked, a cardiac exam with "regular rate and rhythm, no murmurs" on a patient whose murmur was the reason for the echo, and a normal neuro exam on a patient examined on a stretcher in the hallway, in a C-collar.</p>
+<p>The scribe completed the pattern of a normal note where the transcript was silent (F2). Nothing flagged the fabrications.</p>
+<p>Eight months later the case is in litigation. The documented exam never happened. The plaintiff's attorney can show it never happened. The signature under it is yours. "The AI wrote that part" is not a defense. It is an admission that you signed testimony you never read.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Read before signing. As if you wrote it. Not for grammar, for facts: every finding, every value, every claim checked against what actually happened.</li>
+<li>Hunt the silences. AI-drafted notes confabulate hardest where the input was quiet: undone exam elements documented as normal, unasked questions documented as answered. Check what the note claims happened against what happened.</li>
+<li>Scale the depth by the D2 grid, never to zero. Proofread the low-stakes draft. Line-verify the clinical record.</li>
+<li>Decide your daily AI-output volume by what you can actually verify, not by what the tool can produce. Throughput that outruns your reading is unread signing with extra steps.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Automation bias compounds with volume. The first hundred outputs were fine, so the hundred-and-first goes through on the pattern of the hundred before it. The skipping is not a decision; it is an erosion, invisible from the inside because every skipped verification is rewarded with saved time and no consequence, until the one that matters. The cost is your license defending a sentence you never saw, and the discovery that "I always review them" stopped being true months before you stopped saying it.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-4d-model">The 4D Model</a><a class="xt" href="#stakes-and-reversibility">Stakes &amp; Reversibility</a><a class="xt" href="#judging-the-output">Judging Output</a><a class="xt" href="#owning-the-record">Owning the Record</a><a class="xt" href="#confabulation">Confabulation</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#the-iteration-loop"><span class="nd">&#8592; Previous</span><span class="nt">The Iteration Loop</span></a><a class="anb nr" href="#owning-the-record"><span class="nd">Next &#8594;</span><span class="nt">Owning the Record</span></a></nav>
+</div>
+</article>
+
+<article id="owning-the-record" class="page" data-title="Owning the Record">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The 4D Framework</span><span class="badge b2">This Quarter</span><span class="rt">3 min read</span></div>
+<h1 class="at">Owning the Record</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">The output is yours the moment you use it. Ownership does not transfer to the vendor, the institution, or the tool, and "the AI wrote it" has never once worked as a defense.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p><strong>Ownership.</strong> Legally and professionally, the analysis is short. You are the licensed professional. The tool is an instrument. When a chart entry is wrong, the question is never "was the software accurate," it is "did the clinician meet the standard of care." Vendors reinforce this in writing: every clinical AI contract carries language stating the tool does not practice medicine and the clinician retains responsibility for all decisions. Their lawyers settled the ownership question before you ever logged in. Their answer was you.</p>
+<p><strong>Attribution.</strong> What to document about AI involvement sorts into three bins. Required: whatever your institution's policy and your state's rules say. Wise: a brief note when AI drafted something consequential and you materially reviewed it. Noise: disclaiming every spell-check and autocomplete. Over-disclosure buries the disclosures that matter.</p>
+<p><strong>The deposition lens.</strong> The cleanest test for any documentation question: imagine explaining it under oath. Every answer that survives that room has the same shape: "I used a tool, I reviewed its output against the facts, I corrected what needed correcting, and I signed what I verified." Workflows you would describe differently under oath than to a colleague are workflows to fix now.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>The deposition, eighteen months after the shift.</p>
+<p>"Doctor, did you review this note before signing it?" There are only two answers. Yes, and the note's errors are your errors, defensible the way physician errors are defensible: against the standard of care, with your reasoning on the record. Or no, and the case is functionally over, because you have testified that the chart is something you attested to without reading.</p>
+<p>The follow-up is worse: "Is it your practice to sign AI-generated notes without reading them?" Practice. Not this note: all of them. Every note in that EHR's audit log, with its timestamps showing four seconds between note generation and signature, is now in scope. The audit log is the witness clinicians forget. Diligence is measurable in retrospect.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Learn your institution's AI documentation policy and your state's disclosure requirements.</li>
+<li>Document material AI use the way scribe use is documented: briefly, factually, once. "Note drafted with ambient AI scribe; reviewed and edited by me."</li>
+<li>Never document a review that did not happen. An attestation contradicted by the audit log is worse than no attestation.</li>
+<li>Run the deposition lens over your standing workflows once a quarter: could I describe this process under oath without flinching? Fix the ones where the answer is no.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Ownership gets assumed to sit elsewhere: with the vendor, because they built it; with the institution, because they bought it; with informatics, because they configured it. Every one of those parties has a document establishing the opposite, and none of them will be named on the chart. The assumption survives because it is never tested in ordinary practice. The cost is discovering the true answer at the worst possible moment, in front of a lawyer, when the vendor's indemnification clause, the institution's policy, and your signature all point at the same person.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-signature-rule">The Signature Rule</a><a class="xt" href="#stakes-and-reversibility">Stakes &amp; Reversibility</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#the-signature-rule"><span class="nd">&#8592; Previous</span><span class="nt">The Signature Rule</span></a><a class="anb nr" href="#phi-what-counts"><span class="nd">Next &#8594;</span><span class="nt">PHI: What Counts and What Doesn&#8217;t</span></a></nav>
+</div>
+</article>
+
+<article id="phi-what-counts" class="page" data-title="PHI: What Counts and What Doesn’t">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">Legal &amp; Compliance</span><span class="badge b3">This Week</span><span class="rt">3 min read</span></div>
+<h1 class="at">PHI: What Counts and What Doesn&#8217;t</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">PHI is health information plus anything that could identify the patient, and the list of identifiers is longer than your intuition says. Removing the name removes one identifier out of eighteen.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Protected health information is the combination that matters: information about health or healthcare, linked to something that could identify the person. Either half alone is fine. A creatinine of 4.2 belongs to nobody. A name with no clinical content is a phone book. Together, they are PHI, and everything in HIPAA attaches to them.</p>
+<p>HIPAA names eighteen identifier categories, and the de-identification standard requires removing all of them. The ones clinicians forget:</p>
+<ul>
+<li><strong>Dates.</strong> All dates tied to the person: admission date, procedure date, date of death, any date more specific than the year. "Presented on March 14th" is an identifier.</li>
+<li><strong>Ages over 89.</strong> "A 94-year-old" is an identifier by itself.</li>
+<li><strong>Geography smaller than a state.</strong> The hospital name, the town, "our small community ED in [county]."</li>
+<li><strong>The long tail.</strong> MRN, account numbers, device serial numbers, photos, license plates, IP addresses.</li>
+<li><strong>The catch-all.</strong> Any other unique identifying characteristic. The circus performer with the unusual injury is identifiable to everyone who heard about the case, no name required.</li>
+</ul>
+<p>The clinical habit that matters: rare combination equals identification. A diagnosis, an age, a date, and a town can pin a person precisely when the combination is unusual, and unusual combinations are exactly what makes a case interesting enough to type into a chatbot.</p>
+<div class="callout cd"><div class="cl">Do Not Do This</div><p>Do not treat "no name, no MRN" as de-identified. Dates, location, age over 89, rare mechanisms, and unusual clinical stories can identify the patient by combination.</p></div>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>A resident asks a public chatbot for help: "67-year-old man, presented to our ED on June 3rd after a tractor rollover at his farm in [town], now with this complication..."</p>
+<p>No name, no MRN. He would tell you it is de-identified. Count the identifiers: age, date, mechanism, town, and a catch-all-grade unique circumstance. In a town of four thousand, this is a positive identification with a sentence of effort. It went to a third-party server under consumer terms from a personal account. That is a reportable breach assembled entirely from details that each felt harmless.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Learn the categories that bite: names, dates, geography below state level, ages over 89, unique circumstances. Audit every prompt against them before sending.</li>
+<li>De-identify by abstraction, not deletion: "a man in his 60s, several days after a crush mechanism." Keep the clinical physics, drop the fingerprints.</li>
+<li>For rare presentations, abstract harder. The more interesting the case, the more identifying its details.</li>
+<li>When the clinical question genuinely requires the specifics, that is not a de-identification problem. That is a "use the institutionally covered tool" problem (L2).</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>De-identification gets equated with anonymization-by-name-removal. The other seventeen categories ride through in prompts, presentations, and posts, and the combination does the identifying. The failure is invisible at the moment of disclosure; nothing bounces, nothing warns. It becomes visible when the patient, the family, or the compliance office recognizes the case. Cost: a breach investigation centered on a prompt you cannot recall and the tool retained.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#hipaa-basics">HIPAA Basics</a><a class="xt" href="#consent-and-disclosure">Consent &amp; Disclosure</a><a class="xt" href="#standing-orders">Standing Orders</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#owning-the-record"><span class="nd">&#8592; Previous</span><span class="nt">Owning the Record</span></a><a class="anb nr" href="#hipaa-basics"><span class="nd">Next &#8594;</span><span class="nt">HIPAA Basics: Where the Chatbot Fits</span></a></nav>
+</div>
+</article>
+
+<article id="hipaa-basics" class="page" data-title="HIPAA Basics: Where the Chatbot Fits">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">Legal &amp; Compliance</span><span class="badge b3">This Week</span><span class="rt">4 min read</span></div>
+<h1 class="at">HIPAA Basics: Where the Chatbot Fits</h1>
+<div class="bl"><div class="bll">Bottom Line</div><div class="blt">HIPAA permits PHI in AI tools under exactly one condition: a business associate agreement between your institution and the vendor. No BAA, no PHI. No exceptions for how useful the tool is.</div></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Strip HIPAA to the parts that govern your AI use and three concepts remain.</p>
+<p><strong>Covered entities and the chain of trust.</strong> You and your institution are covered: bound to protect PHI. A vendor handling PHI on your behalf must be bound into the same chain by a business associate agreement — a contract making the vendor legally responsible for safeguarding what you send. The BAA is the entire dividing line between tools. The enterprise AI scribe your hospital deployed has one. The consumer chatbot on your phone does not. Identical model, possibly the same company; the legal status of typing a patient's details into each could not be more different.</p>
+<p><strong>Consumer tools are not covered, and their terms say so.</strong> Free-tier chatbots may retain your prompts, use them for training, and have humans review them, per terms of service nobody reads. Sending PHI into one is disclosure to an uncovered third party. That it was convenient, well-intentioned, and clinically helpful changes nothing about its status as a breach.</p>
+<p><strong>Minimum necessary still applies.</strong> Even inside a covered tool, use the least PHI the task requires. The habit from L1 does not retire when the BAA appears. The BAA changes what is legal, not what is wise. Less PHI in the window is also better context discipline (D4). The law and the craft point the same direction.</p>
+<p>What HIPAA does not do: care how good the tool is. There is no accuracy exception, no "it improved care" defense, no carve-out for tools everyone at the conference was praising. The analysis is plumbing, not merit: where does the data go, and is that destination bound to protect it?</p>
+<div class="callout cs"><strong>Use This Today:</strong> Before entering patient details, ask one question: is this specific account inside my institution's covered environment with a BAA? If you do not know, treat it as no.</div>
+<h2>Clinical Anchor</h2>
+<div class="anch">
+<p>Two attendings, same hallway, same minute.</p>
+<p>One opens the institution's deployed AI assistant, behind single sign-on, covered by a BAA, and pastes the relevant chart excerpt to draft a peer-to-peer appeal letter. Routine use of a covered tool.</p>
+<p>The other hits the enterprise tool's clunky interface, gives up, and pastes the same excerpt into the consumer chatbot in a personal browser tab, because it is faster and honestly better at letters. Same excerpt, same purpose, same sixty seconds. This one is a reportable breach with the patient's data now retained by an uncovered company under consumer terms.</p>
+<p>The clinical judgment in both rooms was identical. The plumbing was the whole difference, and the second attending never thought about plumbing once.</p>
+</div>
+<h2>What To Do</h2>
+<ol>
+<li>Sort every AI tool you touch into two bins: institutionally covered (BAA, deployed for you, sanctioned for PHI) and everything else. If you do not know a tool's bin, it is in the second bin.</li>
+<li>PHI goes only into the first bin. Strip and abstract per L1 for everything else.</li>
+<li>The shadow-use trap is real and predictable: when the covered tool is worse than the consumer one, the gap fills with breaches. If the sanctioned tool is unusable, escalate that as the patient-safety issue it is rather than quietly routing around it.</li>
+<li>Personal accounts on covered platforms do not count. The BAA covers the institution's tenant, not the same product with your personal login.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>The breach does not feel like a breach. It feels like working late. The consumer tool is faster, better at the task, and one tab away. The prompt that crosses the line reads like every compliant prompt before it. Nothing alerts; the workflow rewards itself daily. Discovery comes later and sideways: an OCR audit, a vendor's training-data disclosure, a patient who finds their case described by a chatbot. By then the question is volume: how many prompts, over how many months, from how many clinicians who all reasoned the same way. Cost: a breach measured in patients, with your login on it.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#phi-what-counts">PHI — What Counts</a><a class="xt" href="#liability-when-ai-is-wrong">Liability When AI Is Wrong</a><a class="xt" href="#the-wrapper-is-not-the-model">The Wrapper Is Not the Model</a><a class="xt" href="#standing-orders">Standing Orders</a></div></div>
+</div>
+<nav class="an"><a class="anb " href="#phi-what-counts"><span class="nd">&#8592; Previous</span><span class="nt">PHI: What Counts and What Doesn&#8217;t</span></a><a class="anb nr" href="#liability-when-ai-is-wrong"><span class="nd">Next &#8594;</span><span class="nt">Liability When the AI Is Wrong</span></a></nav>
+</div>
+</article>
+
+<article id="liability-when-ai-is-wrong" class="page" data-title="Liability When the AI Is Wrong">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">Legal &amp; Compliance</span><span class="badge b3">This Week</span><span class="rt">3 min read</span></div>
+<h1 class="at">Liability When the AI Is Wrong</h1>
+<div class="bl"><div class="bll">Bottom Line</div><div class="blt">When AI contributes to patient harm, the malpractice analysis runs through you, not the tool. The standard of care is still the measure, your judgment is still the subject, and the vendor's contract already pointed the arrow at you.</div></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>The legal landscape for clinical AI is unsettled at the edges and settled at the center. The center: malpractice asks whether a reasonable clinician would have done what you did. The tool's involvement does not change the question. It changes the evidence.</p>
+<p><strong>The vendor is shielded by design.</strong> Clinical AI contracts uniformly state the tool is informational, does not practice medicine, and leaves all decisions with the clinician. Courts have historically treated clinical software as a tool of the learned professional rather than a product that can commit malpractice, and the "learned intermediary" between the software and the patient is you. Suing the vendor is hard, slow, and rare. Suing the physician is the established path. Plaintiff's counsel takes the established path.</p>
+<p><strong>Liability cuts both ways, and that is the trap.</strong> Today, following the AI off the standard of care is indefensible: "the model recommended it" mitigates nothing. But the other edge is sharpening. As AI tools become standard equipment, ignoring an accurate AI flag becomes its own exposure: the sepsis alert that fired, was dismissed without documentation, and preceded a deterioration is already plaintiff-exhibit material. The defensible position is not "always trust" or "always ignore." It is documented judgment: engaged with the flag, reasoned about it, decided, recorded why.</p>
+<p><strong>The record is the battlefield.</strong> Audit logs preserve what fired, what you saw, how long you looked, what you overrode (D11). Cases will be reconstructed from that scaffolding. Undocumented reasoning, in that reconstruction, is indistinguishable from no reasoning.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch">
+<p>A CDS tool flags a drug interaction as low-severity based on incomplete renal data; the true severity for this patient is high. The clinician, alert-fatigued through forty flags that shift, accepts the classification without opening the detail view. The patient is harmed.</p>
+<p>At deposition, the questions are not about the algorithm. The algorithm's error is established and largely irrelevant to the physician's case. The questions are: Doctor, what did the patient's renal function show? Did you know the tool lacked that value? Would a reasonable physician, prescribing this combination in renal failure, have checked?</p>
+<p>The tool being wrong does not answer any of them. The tool was wrong in a way the physician was positioned, trained, and paid to catch. That is the whole case, and it is the standard malpractice case with a software chapter, not a software case at all.</p>
+</div>
+<h2>What To Do</h2>
+<ol>
+<li>Treat AI output as information you weigh, never as cover. "The tool said" has no defensive value; "I considered the flag, checked it against X, and concluded Y" has all of it.</li>
+<li>Document overrides of AI recommendations with one line of reasoning, especially for alerts that later prove right. The undocumented dismissal is the discoverable one.</li>
+<li>Know which tools in your workflow are FDA-regulated devices versus unregulated informational software. It changes institutional duties and, increasingly, what the standard of care assumes you had available.</li>
+<li>Apply the D1 screen with liability eyes: never delegate to AI a judgment you could not defend independently, because independently is exactly how you will be asked to defend it.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Clinicians import a consumer intuition: when the product is defective, the manufacturer answers. It is how cars and toasters work, so the assumption transfers silently, and a quiet sense of shared responsibility creeps into daily decisions: lighter checks, faster accepts, the tool as a colleague who holds part of the bag. The tool holds none of the bag. The contract saw to it before deployment, and the discovery arrives at the deposition, where the vendor's lawyer is not in the room and the named defendant is. Cost: the standard of care applied to you alone, retroactively, on decisions made as if it were shared.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-signature-rule">The Signature Rule</a><a class="xt" href="#owning-the-record">Owning the Record</a><a class="xt" href="#hipaa-basics">HIPAA Basics</a><a class="xt" href="#clinical-decision-support">Clinical Decision Support</a></div></div>
+</div>
+<nav class="an"><a class="anb " href="#hipaa-basics"><span class="nd">&#8592; Previous</span><span class="nt">HIPAA Basics: Where the Chatbot Fits</span></a><a class="anb nr" href="#consent-and-disclosure"><span class="nd">Next &#8594;</span><span class="nt">Consent &amp; Disclosure</span></a></nav>
+</div>
+</article>
+
+<article id="consent-and-disclosure" class="page" data-title="Consent &amp; Disclosure">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">Legal &amp; Compliance</span><span class="badge b2">This Quarter</span><span class="rt">3 min read</span></div>
+<h1 class="at">Consent &amp; Disclosure</h1>
+<div class="bl"><div class="bll">Bottom Line</div><div class="blt">Patients have a right to know when AI is materially involved in their care. The rules are jurisdiction-specific and moving. The practical playbook is simpler: disclose plainly, get agreement where required, and never let a patient discover it on their own.</div></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Consent law for clinical AI is the least settled part of this section, so this spread separates the stable floor from the moving pieces.</p>
+<p><strong>The stable floor is ethical, not statutory.</strong> Informed consent has always covered the material elements of care, and a recording device in the exam room, an algorithm reading the imaging, or a chatbot answering the portal message can be material to a reasonable patient. The test that travels across every jurisdiction: would this patient be surprised to learn how this was done? Surprise after the fact is the failure state, legally sometimes, relationally always.</p>
+<p><strong>The moving pieces, in three bins.</strong> Recording tools (ambient scribes) sit in the strictest bin: two-party-consent states make unconsented recording independently illegal, and institutional policies almost universally require an explicit ask. Patient-facing generators (AI-drafted portal replies) sit in the fastest-moving bin: states have begun mandating disclosure when AI generates patient communications, and institutions are adding standing disclosure lines. Clinician-facing tools (CDS, drafting aids) sit in the quietest bin: generally no individual consent requirement, though institutional transparency obligations are growing.</p>
+<p><strong>Disclosure is a skill, not a form.</strong> The ask takes one sentence and lands best when it is concrete and revocable: "I use a program that listens and drafts my note so I can pay attention to you instead of the keyboard. I review everything it writes. Okay if we use it?" Patients overwhelmingly say yes when asked first. Refusals are typically about something specific and manageable, and honoring them cheaply buys durable trust.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch">
+<p>A patient sends a worried portal message about a biopsy result. The reply is warm, thorough, and AI-drafted; the clinician edited it lightly and sent it. Three months later, local news runs a story on the health system's AI messaging pilot, and the patient rereads the thread with new eyes. The warmth now reads as manufactured. She was never told.</p>
+<p>Nothing about the message was wrong. The medicine was right, the edit was real, and in her state at the time, no statute was violated. What broke was the surprise: she learned the how from a news crawl instead of from her doctor. The complaint she files is not about accuracy. It says she no longer knows which of her doctor's words were her doctor's.</p>
+<p>A one-line standing disclosure in the portal would have cost nothing and prevented all of it.</p>
+</div>
+<h2>What To Do</h2>
+<ol>
+<li>Know your two governing layers: your state's rules (recording consent, AI-communication disclosure mandates) and your institution's policy. Where they differ, the stricter one is your floor.</li>
+<li>For ambient scribes: ask every patient, every visit, in plain language, with an easy no. Document the yes the way your policy directs.</li>
+<li>For AI-drafted patient communications: follow the disclosure mandate if your jurisdiction has one. Consider the standing disclosure line even if it does not. The cost is one sentence; the alternative is the anchor scenario.</li>
+<li>Run the surprise test on any new tool: if this patient learned exactly how this was done, from someone else, would it cost trust? If yes, the disclosure should come from you.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Disclosure gets treated as the institution's problem: somewhere in the intake packet, page nine, a paragraph about technology in care. Legally that may even hold. Relationally it fails completely, because consent buried in boilerplate produces exactly the after-the-fact surprise the disclosure existed to prevent, with the added insult that the system can prove the patient was technically told. The trust damage lands on the clinician in the room, not the packet's author. Cost: the patient relationship, plus a complaint file, in exchange for skipping one sentence you could have said.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#phi-what-counts">PHI — What Counts</a><a class="xt" href="#hipaa-basics">HIPAA Basics</a><a class="xt" href="#owning-the-record">Owning the Record</a><a class="xt" href="#ambient-scribes">Ambient Scribes</a></div></div>
+</div>
+<nav class="an"><a class="anb " href="#liability-when-ai-is-wrong"><span class="nd">&#8592; Previous</span><span class="nt">Liability When the AI Is Wrong</span></a><a class="anb nr" href="#ambient-scribes"><span class="nd">Next &#8594;</span><span class="nt">Ambient AI Scribes</span></a></nav>
+</div>
+</article>
+
+<article id="ambient-scribes" class="page" data-title="Ambient AI Scribes">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">Clinical Applications</span><span class="badge b3">This Week</span><span class="rt">3 min read</span></div>
+<h1 class="at">Ambient AI Scribes</h1>
+<div class="bl"><div class="bll">Bottom Line</div><div class="blt">The scribe writes the note a typical visit would have produced, not a transcript of yours. It saves real time at the screen, and every minute saved is converted into a verification debt that comes due at signature.</div></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Ambient scribes (Abridge, Nuance DAX, Suki, and EHR-integrated equivalents) listen to the visit, transcribe it, and generate a structured note. The documentation burden they remove is real, the burnout data is genuinely encouraging, and this is probably the AI tool most likely to be in your workflow already.</p>
+<p>The half the vendor leads with: less time charting, more eye contact, notes done before you leave. Largely true.</p>
+<p>The half this book exists for: the note is a prediction, not a record. The pipeline is speech-to-text, then a language model generating a note from the transcript, and that second step inherits every property from the Substrate section. Where the transcript is silent, the model completes the pattern of a typical note (F2): exams normalize, reviews of systems fill in, vague mentions crystallize into specific findings. The scribe does not know what you actually examined. It knows what notes usually say after visits that sound like this one.</p>
+<p>Predictable failure geography: strongest in the narrative HPI, where the patient's own words are the source material. Weakest in exam findings (often partly unverbalized), numbers and dosages (speech-to-text mangles them), laterality, negatives ("no chest pain" heard or generated where the conversation was ambiguous), and attribution in multi-speaker visits, where the daughter's symptom history can land in the patient's HPI.</p>
+<p>Two non-negotiables ride along: recording consent every visit (L4), and the signature rule at full strength (D10), because this is the one AI output that becomes legal testimony with your name on it every single time you use it.</p>
+<div class="callout cf"><strong>Do Not Do This:</strong> Do not sign a scribe note by vibe. Line-check the exam, laterality, numbers, medications, negatives, and anything the visit did not explicitly contain.</div>
+<h2>Clinical Anchor</h2>
+<div class="anch">
+<p>A follow-up visit for hypertension. Mid-visit, the patient mentions her knee has been aching; you say "we'll keep an eye on it" and return to titrating the lisinopril.</p>
+<p>The note documents a musculoskeletal exam of the knee: no effusion, full range of motion, ligaments stable. None of it happened. The model completed the pattern, because in its training distribution, notes that mention a knee complaint usually contain a knee exam. The fabrication is not random; it is plausible, which is what makes it invisible on a skim. You sign it.</p>
+<p>Eight months later she tears the meniscus, litigation touches the record, and the chart shows a documented stable knee exam you never performed. The note was testimony. The scribe was never going to be the one testifying.</p>
+</div>
+<h2>What To Do</h2>
+<ol>
+<li>Consent first, every visit, one sentence, easy no (L4).</li>
+<li>Verify by zone: skim the HPI, but line-verify the exam, medications, numbers, laterality, and negatives. Check what the note says happened against what happened.</li>
+<li>Hunt the silences specifically: anything documented as examined or asked that the visit did not contain is the scribe's signature failure. Delete on sight.</li>
+<li>Dictate the unverbalized on purpose: state exam findings aloud as you go. It improves the source material and shrinks the gap the model fills.</li>
+<li>Recalibrate after any vendor update (F4). The scribe you verified last quarter is not the scribe you have now.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>The first month builds the habit and the third month breaks it. Early outputs get read closely, prove mostly accurate, and the verification relaxes toward a skim, then toward a signature reflex; automation bias compounding with volume (D10) on the highest-volume AI output in medicine. The fabricated findings are individually rare and always plausible, so nothing interrupts the slide. The cost arrives through the one note in five hundred that documents the exam you never did on the patient who deteriorates: a chart full of unread attestations, an audit log that shows the reading time, and a license explaining both.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#confabulation">Confabulation</a><a class="xt" href="#the-signature-rule">The Signature Rule</a><a class="xt" href="#owning-the-record">Owning the Record</a><a class="xt" href="#consent-and-disclosure">Consent &amp; Disclosure</a></div></div>
+</div>
+<nav class="an"><a class="anb " href="#consent-and-disclosure"><span class="nd">&#8592; Previous</span><span class="nt">Consent &amp; Disclosure</span></a><a class="anb nr" href="#clinical-decision-support"><span class="nd">Next &#8594;</span><span class="nt">AI Clinical Decision Support</span></a></nav>
+</div>
+</article>
+
+<article id="clinical-decision-support" class="page" data-title="AI Clinical Decision Support">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">Clinical Applications</span><span class="badge b2">This Quarter</span><span class="rt">4 min read</span></div>
+<h1 class="at">AI Clinical Decision Support</h1>
+<div class="bl"><div class="bll">Bottom Line</div><div class="blt">AI-era CDS fails the same way alert-era CDS failed, plus two new ways: its reasoning is opaque, and its accuracy quietly depends on data quality and drift nobody at the bedside can see. Treat every recommendation as a consult from a service that will not show its work.</div></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Clinical decision support has been in the EHR for decades as rules: if potassium high and patient on spironolactone, fire alert. The rules were dumb but inspectable; you could read the logic and decide where it was wrong.</p>
+<p>The new generation is predictive and generative: machine-learning risk scores (deterioration, readmission, sepsis), imaging flags queued for your attention, and increasingly, language-model summaries and suggestions woven into the chart. Three properties changed.</p>
+<p><strong>The logic went opaque.</strong> A rule could be audited; a model's output is a score with, at best, a list of contributing features. You cannot inspect your way to trust. Trust has to come from performance data, ideally on your institution's population, which means the right to ask for that data is now part of the bedside skillset (D8).</p>
+<p><strong>The input is the chart, and the chart is dirty.</strong> These models consume documentation: vitals charted late, problem lists never reconciled, copy-forward text. Garbage in is now invisible garbage in, because the model does not flag that its inputs were stale. A score computed on bad data looks identical to a score computed on good data.</p>
+<p><strong>The model drifts.</strong> Performance degrades as practice patterns, populations, and documentation habits shift under it. The model validated at deployment is not the model's accuracy today (the sepsis spread, C3, is the canonical story). Recalibration is the institution's job, but knowing that drift exists is yours.</p>
+<p>What stays constant from the old era: alert fatigue is the dominant failure mode of all CDS, and the liability cuts both ways (L3): following a bad flag off the standard of care and dismissing a good flag undocumented are both losing positions.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch">
+<p>A deterioration score pages you about bed 14: risen overnight, now above threshold. You eyeball the patient: comfortable, vitals fine, eating breakfast. The score has cried wolf three times this week, and the temptation is a one-click dismiss.</p>
+<p>The defensible move costs ninety seconds: why did it fire? The contributing factors show a creatinine bump and a heart rate trend buried across two shifts of charting; nobody had connected them. The patient is in early AKI from the diuretic adjustment, caught a day early by a model that was right for inspectable reasons and would have been dismissed on vibes.</p>
+<p>Next week the same score fires on bed 9 because a CNA charted a manual blood pressure taken during a coughing fit. Same score, same threshold, garbage input. The skill is not trusting or distrusting the tool. It is the ninety seconds: interrogate the inputs, decide, document.</p>
+</div>
+<h2>What To Do</h2>
+<ol>
+<li>Treat the score as a consult, not a verdict: a prompt to look, never a substitute for looking, and never a reason to act against your exam without resolving the conflict.</li>
+<li>Interrogate before you dismiss or obey: what inputs drove this, and are they real, current, and about this patient?</li>
+<li>Document engagement either way, one line (L3): why you acted, or why you reasonably did not.</li>
+<li>Ask the deployment questions once per tool: validated on what population, performance at our site, who monitors drift, when was it last recalibrated. No answers is an answer.</li>
+<li>Report the misfires. Drift gets caught by aggregated bedside reports long before the annual review does.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Alert fatigue, now with a worse credibility curve. The model fires often, is usually ignorable, and trains the floor to dismiss it; then drift degrades it further, dismissal becomes universal, and the one true flag dies in a queue of forty. The new twist is misplaced deference at the other pole: the score's mathematical costume earns it more trust than a colleague's verbal concern would get, so clinicians override their own exam to follow a number computed from a mischarted blood pressure. Both poles share the cost: the patient the tool was deployed to catch, missed, with an audit log proving the flag fired and was waved off in four seconds.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-epic-sepsis-model">The Epic Sepsis Model</a><a class="xt" href="#judging-the-output">Judging the Output</a><a class="xt" href="#liability-when-ai-is-wrong">Liability When AI Is Wrong</a><a class="xt" href="#the-wrapper-is-not-the-model">The Wrapper Is Not the Model</a></div></div>
+</div>
+<nav class="an"><a class="anb " href="#ambient-scribes"><span class="nd">&#8592; Previous</span><span class="nt">Ambient AI Scribes</span></a><a class="anb nr" href="#the-epic-sepsis-model"><span class="nd">Next &#8594;</span><span class="nt">The Epic Sepsis Model: A Case Study</span></a></nav>
+</div>
+</article>
+
+<article id="the-epic-sepsis-model" class="page" data-title="The Epic Sepsis Model: A Case Study">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">Clinical Applications</span><span class="badge b2">This Quarter</span><span class="rt">4 min read</span></div>
+<h1 class="at">The Epic Sepsis Model: A Case Study</h1>
+<div class="bl"><div class="bll">Bottom Line</div><div class="blt">The most widely deployed sepsis prediction model in American medicine missed two-thirds of sepsis cases in independent validation while burying clinicians in false alerts. Every lesson in this book about validation, drift, and vendor claims is in this one story.</div></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>The Epic Sepsis Model shipped inside the most widely used EHR in the country and was adopted by hundreds of hospitals, largely on the vendor's internal performance claims. It became the natural experiment the field needed, and the results are the syllabus.</p>
+<p><strong>External validation versus internal claims.</strong> In 2021, University of Michigan researchers published an independent validation (Wong et al., JAMA Internal Medicine): in their hospitalized cohort, the model identified a third of sepsis cases, missed the rest, and generated alerts on a large fraction of all hospitalized patients to do even that. The vendor's reported numbers were dramatically better. Neither party was exactly lying; the gap was the methodology, most notoriously that aspects of the model's development tangled the prediction with the clinical recognition it was supposed to precede. A model can score well by predicting that sepsis will be diagnosed around the time clinicians are already diagnosing it. That is a circular victory with no bedside value.</p>
+<p><strong>The workload denominator.</strong> A model that flags everyone catches everyone. Sensitivity without the false-alert denominator is marketing, not evidence. The bedside question is always paired: what does it catch, and what does it cost in alerts per true catch?</p>
+<p><strong>The aftermath is the hopeful part.</strong> The scrutiny worked. The vendor rebuilt the model, institutions learned to demand local validation before deployment, and the episode pushed the field toward exactly the posture this book teaches. The system corrected because someone external checked, which is Discernment operating at institutional scale: the same move as D8, with a research budget.</p>
+<p>Why this spread exists in a field edition: not to criticize one vendor, but because you will sit in committee meetings where the next model is pitched on internal numbers, and you should recognize the shape.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch">
+<p>A community hospital deploys the model in 2019. The alerts fire constantly; the floor nurses develop the dismiss reflex within a month, the hospitalists within two. A few genuinely early catches happen and become the anecdotes that justify the noise.</p>
+<p>Then the 2021 paper circulates. The sepsis committee pulls local data and finds their own numbers match Michigan's: most of their sepsis cases were never flagged before clinical recognition, and the alert burden was enormous. The uncomfortable inventory: two years of alert fatigue, workflow built around a tool performing far below assumption, and most quietly damaging, the cases everyone assumed were being watched for by the algorithm and therefore watched for less themselves. The safety net that underperforms its reputation is worse than no net, because nets change how people climb.</p>
+</div>
+<h2>What To Do</h2>
+<ol>
+<li>For any predictive tool, ask for external validation, not vendor numbers. If none exists, the deployment is the experiment, and someone should be running it as one, with local performance measured against ground truth.</li>
+<li>Always get the pair: detection rate and alert burden. Refuse to evaluate either alone.</li>
+<li>Ask what the model actually predicts. "Sepsis" might mean a billing code, an antibiotic order, or a clinical event. The label defines the usefulness.</li>
+<li>Never subtract your own surveillance because a model is watching. The model's sensitivity is not your sensitivity; the net is not the climber.</li>
+<li>When credible external evidence lands on a tool you use, pull your local numbers. The literature is the alarm; your data is the answer.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Institutional automation bias: the deployment itself becomes the evidence. The hospital bought it, IT integrated it, the committee approved it, so the floor reasonably assumes somebody validated it, while every party in that chain assumed the same thing about a different party. The vendor's internal numbers pass through procurement unchallenged and emerge at the bedside wearing institutional authority. Cost: years-long workforce trained to ignore the tool, patients assumed covered by a net that was not there, and the discovery outsourced to academic researchers who happened to check. The fix in one line: trust attaches to validation, never to deployment.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#clinical-decision-support">AI Clinical Decision Support</a><a class="xt" href="#judging-the-output">Judging the Output</a><a class="xt" href="#the-wrapper-is-not-the-model">The Wrapper Is Not the Model</a><a class="xt" href="#liability-when-ai-is-wrong">Liability When AI Is Wrong</a></div></div>
+</div>
+<nav class="an"><a class="anb " href="#clinical-decision-support"><span class="nd">&#8592; Previous</span><span class="nt">AI Clinical Decision Support</span></a><a class="anb nr" href="#patient-facing-chatbots"><span class="nd">Next &#8594;</span><span class="nt">Patient-Facing Chatbots</span></a></nav>
+</div>
+</article>
+
+<article id="patient-facing-chatbots" class="page" data-title="Patient-Facing Chatbots">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">Clinical Applications</span><span class="badge b2">This Quarter</span><span class="rt">4 min read</span></div>
+<h1 class="at">Patient-Facing Chatbots</h1>
+<div class="bl"><div class="bll">Bottom Line</div><div class="blt">Your patients are already consulting AI, the way they already Googled, except the chatbot answers in confident second-person prose tailored to whatever they typed. The clinical move is the same as it was for Dr. Google: ask, engage, and teach the failure modes instead of fighting the tool.</div></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Two distinct things share this label. Institutional chatbots: symptom checkers on the health system website, triage bots in the portal, AI answering scheduling questions, deployed under a BAA with at least nominal clinical oversight. And consumer chatbots: the general-purpose models patients use at home, which is where the real volume is. This spread is mostly about the second, because that is the one in your exam room tonight, uninvited.</p>
+<p>What changed from the search-engine era is the register. Google returned ten links and left synthesis to the patient; visible seams, visible disagreement. The chatbot returns one fluent answer, in second person, shaped by exactly how the patient described their problem. Every property from the Substrate applies with the safety margins removed: the answer is a prediction tailored to the prompt (F1), the prompt was written by the most motivated and least calibrated describer possible, and the confidence of the prose carries zero information (F2). A patient who types "could this headache be a tumor" and one who types "reassure me about my headache" can get different answers from the same model, each fluent, each absorbed as the answer.</p>
+<p>What also changed: the advice is sometimes genuinely good. Models give reasonable guidance on common complaints often enough that dismissing them wholesale costs you credibility, exactly as eye-rolling at Google did. The patient who arrives saying the chatbot told them to come in tonight is sometimes standing in front of you because the tool worked.</p>
+<p>The institutional version carries the opposite risk profile: lower hallucination odds, but your health system's name on every answer, which is why those deployments live under L3 and L4 obligations the consumer tools shrug off.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch">
+<p>A 34-year-old presents at 0200 with three days of calf pain. She is apologetic: "the AI said with the swelling and my birth control I should be seen tonight, I know it's probably nothing." The chatbot took a history, weighed her risk factors, and triaged her correctly; her Wells score agrees, and the ultrasound finds the DVT.</p>
+<p>Same week, a 58-year-old with crushing substernal pressure arrives six hours late. He had described his symptoms to a chatbot as "burning in my chest after dinner," and it walked him through reflux management: competent advice for the story he told. He fed it the framing his denial preferred, and it predicted the answer that framing implied. No follow-up question about diaphoresis, no exam, no ECG, because the model works the case it is given, and patients author their own cases.</p>
+<p>Two patients, same tool, same week. The difference was never the model's knowledge. It was who wrote the prompt.</p>
+</div>
+<h2>What To Do</h2>
+<ol>
+<li>Add it to your intake reflex: "What have you read or asked about this?" covers Google and chatbots alike, surfaces the anchor the patient walked in with, and lets you address it directly instead of competing with a ghost.</li>
+<li>When the chatbot was right, say so. Crediting the tool when it earns it buys you standing for the times you contradict it.</li>
+<li>Teach the one-liner version of this book: it predicts answers to the story you tell it, it cannot examine you, and it is most wrong when you most want a specific answer. Patients who understand the prompt-shapes-the-answer loop use these tools measurably better.</li>
+<li>Redirect rather than prohibit: chatbots are good at explaining diagnoses, decoding jargon, and preparing questions for visits. Steering patients to those uses sticks better than warning them off entirely.</li>
+<li>If your institution deploys one, know its escalation paths before vouching for it; its failures will be attributed to you (L3).</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>The failure is symmetrical anchoring. The patient anchors on the chatbot's answer before arrival, and the clinician anchors on dismissing it because of the source, and now two parties are defending positions instead of working a complaint. The reflux patient's six-hour delay is the visible half. The invisible half is the clinician who waves off "the AI said this could be serious" without engaging, teaching the patient that disclosure earns dismissal, so the next consultation goes unmentioned and unexamined. Cost: the AI consult goes underground, exactly as Dr. Google did when medicine sneered at it, and you lose the one move that ever worked: being in the conversation.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-four-primitives">The Four Primitives</a><a class="xt" href="#confabulation">Confabulation</a><a class="xt" href="#liability-when-ai-is-wrong">Liability When AI Is Wrong</a><a class="xt" href="#consent-and-disclosure">Consent &amp; Disclosure</a></div></div>
+</div>
+<nav class="an"><a class="anb " href="#the-epic-sepsis-model"><span class="nd">&#8592; Previous</span><span class="nt">The Epic Sepsis Model: A Case Study</span></a><a class="anb nr" href="#ai-inbox-drafting"><span class="nd">Next &#8594;</span><span class="nt">AI Inbox Drafting</span></a></nav>
+</div>
+</article>
+
+<article id="ai-inbox-drafting" class="page" data-title="AI Inbox Drafting">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">Clinical Applications</span><span class="badge b3">This Week</span><span class="rt">4 min read</span></div>
+<h1 class="at">AI Inbox Drafting</h1>
+<div class="bl"><div class="bll">Bottom Line</div><div class="blt">The draft reply is the best risk-to-reward AI tool in your workflow and the purest test of the edit-versus-approve distinction. The day your editing becomes approving, the tool is practicing medicine under your name.</div></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Portal message volume broke clinical inboxes years before AI arrived, so the draft-reply feature (now native in major EHRs) landed on fertile ground: the model reads the patient's message plus some chart context, and a reply appears, waiting for your edit and send. On the D2 grid this is the favorable quadrant: high-stakes content, fully reversible until you hit send, with a built-in human checkpoint. Used properly, it is the best example of augmentation.</p>
+<p><strong>The draft is persuasive in a way a blank box is not.</strong> An empty reply field makes you generate; a drafted reply makes you evaluate, and evaluation under time pressure degrades into skimming. The phenomenon is anchoring: the draft frames what the reply should be before your clinical reasoning gets a vote. Early research on these tools found clinicians did not save dramatic time but reported less cognitive burden, which is the same finding stated two ways: the tool is doing more of the thinking. That is fine, exactly as long as the review is real.</p>
+<p><strong>The model answers the message, not the patient.</strong> It sees the text and whatever chart slice the integration feeds it (F1, D4). It does not know the message is the third escalating contact this month, that "still dizzy" comes from the woman whose last visit you nearly admitted, or that this patient minimizes everything. The thread's clinical subtext is your context, and it is not in the window.</p>
+<p><strong>The tone is excellent, and that is a trap.</strong> Drafts arrive warm and complete-sounding, which raises the approval reflex precisely where vigilance should rise: fluency reading as adequacy (F2). A reply can be perfectly empathetic and clinically wrong about what this message represents.</p>
+<p>The discipline is one question before every send: is this what I would have said? Not "is this acceptable." Yours.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch">
+<p>Message from a 61-year-old, two weeks post-op: "Still having some drainage from the incision, is that normal? Also out of the oxycodone."</p>
+<p>The draft is lovely: some drainage can be normal, keep it clean and dry, warning signs listed, refill request noted for the team. Grammatically perfect, warm, and signable in four seconds.</p>
+<p>What the draft could not know: her last message ten days ago also mentioned drainage, the wound check scheduled after it was no-showed, and "some drainage" from this particular stoic patient is a flare, not a footnote. The correct reply is not reassurance with warning signs. It is "I want to see that incision today."</p>
+<p>The draft was not wrong about wound drainage in general. It was wrong about this thread, because the thread's meaning lived in the chart history and your memory of her, neither of which wrote the draft. An edit-level review catches it instantly; an approve-level review sends it.</p>
+</div>
+<h2>What To Do</h2>
+<ol>
+<li>Read the patient's message first, fully, before reading the draft. Form your one-line impression of what this message is, then look at what the model thinks it is. Order matters; it is your only anchoring defense.</li>
+<li>Apply the yours test before sending: would I have said this? Edit until the answer is yes, or discard and write.</li>
+<li>Check the thread, not the message. Drafts are message-scoped; medicine is thread-scoped. Repeat contacts about the same symptom override any single draft.</li>
+<li>Verify every clinical fact in the draft against the chart: doses, dates, results, instructions (D8). The draft's chart access is partial and its gap-filling is fluent.</li>
+<li>Audit yourself monthly: pull ten sent replies and ask how many were genuinely edited versus approved. The ratio is your drift gauge (D10).</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Volume converts editors into approvers. The inbox is infinite, the drafts are consistently decent, and the send button is the path of least resistance forty times a day; within months the workflow silently inverts from "AI drafts, I write the final" to "AI writes, I bless." Each individual approval was reasonable. The aggregate is a clinician whose patient communication is generated by a model that cannot see the thread, rubber-stamped at a pace no real review could survive, and the audit trail shows it. Cost: the no-showed wound check reassured into a readmission, signed with your name and a four-second review timestamp (D11).</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#stakes-and-reversibility">Stakes &amp; Reversibility</a><a class="xt" href="#context-is-everything">Context Is Everything</a><a class="xt" href="#the-signature-rule">The Signature Rule</a><a class="xt" href="#ambient-scribes">Ambient AI Scribes</a></div></div>
+</div>
+<nav class="an"><a class="anb " href="#patient-facing-chatbots"><span class="nd">&#8592; Previous</span><span class="nt">Patient-Facing Chatbots</span></a><a class="anb nr" href="#/"><span class="nd">Next &#8594;</span><span class="nt">Home</span></a></nav>
+</div>
+</article>
+
+</main>
+
+<footer id="ftr">
+  <div class="ftr-in">
+    <svg class="ekg" viewBox="0 0 600 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 20 H120 L132 20 L140 6 L150 34 L158 20 H300 L312 20 L320 8 L330 32 L338 20 H480 L492 20 L500 6 L510 34 L518 20 H600" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/></svg>
+    <p>First Aid for AI &#183; A clinical field manual &#183; <a href="https://github.com/bloodsweatxed/faai">Source</a></p>
+    <p class="fr">Educational reference &#183; Not legal advice</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var SLUGS = ["you-were-never-onboarded","how-to-use-this-book","the-five-minute-model","the-four-primitives","confabulation","training-data-and-the-cutoff","the-wrapper-is-not-the-model","same-question-different-answer","the-4d-model","the-delegation-decision","stakes-and-reversibility","from-prompts-to-pipelines","context-is-everything","prompting-is-a-consult","standing-orders","grounding-and-rag","judging-the-output","the-iteration-loop","the-signature-rule","owning-the-record","phi-what-counts","hipaa-basics","liability-when-ai-is-wrong","consent-and-disclosure","ambient-scribes","clinical-decision-support","the-epic-sepsis-model","patient-facing-chatbots","ai-inbox-drafting"];
+  var isArticle = {}; SLUGS.forEach(function(s){ isArticle[s]=true; });
+  var q = document.getElementById('q'), qr = document.getElementById('qr'), sel = -1;
+  function closeSearch(){ qr.classList.remove('on'); sel = -1; }
+
+  function show(id){
+    document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+    var el = document.getElementById(id) || document.getElementById('home');
+    el.classList.add('active');
+    var t = el.getAttribute('data-title');
+    document.title = t ? t + ' \u2014 First Aid for AI' : 'First Aid for AI \u2014 The Onboarding Clinicians Never Got';
+  }
+
+  function route(){
+    var h = decodeURIComponent(location.hash.replace(/^#\/?/, ''));
+    if (isArticle[h]) {
+      show(h);
+      var el = document.getElementById(h);
+      el.scrollIntoView();
+      setTimeout(function(){ el.scrollIntoView(); }, 0);
+    } else {
+      var wasHome = document.getElementById('home').classList.contains('active');
+      show('home');
+      var anchor = h && document.getElementById(h);
+      if (anchor) anchor.scrollIntoView();
+      else if (!wasHome) window.scrollTo(0, 0);
+    }
+    closeSearch();
+  }
+  window.addEventListener('hashchange', route);
+  route();
+
+  /* ---------- search ---------- */
+  var idx = null;
+  function buildIndex(){
+    idx = SLUGS.map(function(s){
+      var el = document.getElementById(s);
+      return {
+        slug: s,
+        title: el.getAttribute('data-title'),
+        sec: (el.querySelector('.as')||{}).textContent || '',
+        text: el.textContent.toLowerCase()
+      };
+    });
+  }
+  function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+  q.addEventListener('input', function(){
+    if (!idx) buildIndex();
+    var v = q.value.trim().toLowerCase();
+    if (v.length < 2) { closeSearch(); return; }
+    var hits = idx.filter(function(a){ return a.title.toLowerCase().indexOf(v) >= 0; });
+    idx.forEach(function(a){
+      if (hits.indexOf(a) < 0 && a.text.indexOf(v) >= 0) hits.push(a);
+    });
+    hits = hits.slice(0, 8);
+    qr.innerHTML = hits.length
+      ? hits.map(function(a){ return '<a href="#'+a.slug+'"><span class="qt">'+esc(a.title)+'</span><span class="qs">'+esc(a.sec)+'</span></a>'; }).join('')
+      : '<div class="qnone">No matches</div>';
+    qr.classList.add('on'); sel = -1;
+  });
+  q.addEventListener('keydown', function(e){
+    var links = qr.querySelectorAll('a');
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (!links.length) return;
+      sel = e.key === 'ArrowDown' ? (sel+1) % links.length : (sel-1+links.length) % links.length;
+      links.forEach(function(l,i){ l.classList.toggle('sel', i===sel); });
+    } else if (e.key === 'Enter') {
+      var pick = links[sel >= 0 ? sel : 0];
+      if (pick) { location.hash = pick.getAttribute('href'); q.value=''; closeSearch(); }
+    } else if (e.key === 'Escape') { q.value=''; closeSearch(); q.blur(); }
+  });
+  document.addEventListener('click', function(e){
+    if (!e.target.closest('.srch-wrap')) closeSearch();
+  });
+  qr.addEventListener('click', function(){ q.value=''; });
+})();
+</script>
+</body>
+</html>
