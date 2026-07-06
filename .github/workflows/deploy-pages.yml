@@ -19,33 +19,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # for accurate last-modified dates
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Cache Quartz plugins
-        uses: actions/cache@v4
-        with:
-          path: .quartz/plugins
-          key: ${{ runner.os }}-plugins-${{ hashFiles('quartz.lock.json') }}
-          restore-keys: ${{ runner.os }}-plugins-
-
-      - run: npm ci
-
-      - name: Install Quartz plugins
-        run: npx quartz plugin install
-
-      - name: Build Quartz
-        run: npx quartz build
+      - name: Stage static site
+        run: |
+          mkdir -p _site
+          cp index.html _site/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: public
+          path: _site
 
   deploy:
     needs: build
