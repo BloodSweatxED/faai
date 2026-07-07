@@ -1,0 +1,300 @@
+<!--
+  BUILDER TRACK — ready-to-splice blocks for index.html
+  Written in the FAAI house voice and markup (see DESIGN.md and CLAUDE.md).
+  Integration instructions: handoff/BUILDER-TRACK-HANDOFF.md
+  Do NOT rewrite this copy. Splice it.
+-->
+
+<!-- ============================================================
+     BLOCK A — LIBRARY GROUP
+     Insert in index.html after the closing </details> of the
+     "Clinical Applications" group (currently line ~351), before
+     the </div> that closes .wrap in section#library.
+     ============================================================ -->
+<details class="lg">
+<summary><span class="lgt">The Builder Track</span><span class="lgd">When configuring stops being enough. Memory, skills, tools, and the tests that keep them honest.</span><span class="lgc">5 spreads</span><span class="chev" aria-hidden="true"></span></summary>
+<div class="lrs"><a class="lr" href="#should-you-build"><span class="ln">01</span><span class="lt">Should You Build?</span><span class="lm">3 min</span><span class="badge b2">This Quarter</span></a>
+<a class="lr" href="#memory-engineering"><span class="ln">02</span><span class="lt">Memory Engineering</span><span class="lm">3 min</span><span class="badge b2">This Quarter</span></a>
+<a class="lr" href="#skill-engineering"><span class="ln">03</span><span class="lt">Skill Engineering</span><span class="lm">3 min</span><span class="badge b1">Background</span></a>
+<a class="lr" href="#tool-engineering"><span class="ln">04</span><span class="lt">Tool Engineering</span><span class="lm">3 min</span><span class="badge b1">Background</span></a>
+<a class="lr" href="#evals-testing-what-you-built"><span class="ln">05</span><span class="lt">Evals: Testing What You Built</span><span class="lm">3 min</span><span class="badge b2">This Quarter</span></a></div>
+</details>
+
+<!-- ============================================================
+     BLOCK B — FIVE ARTICLE SPREADS
+     Insert after the closing </article> of #ai-inbox-drafting,
+     before </main>.
+     ============================================================ -->
+
+<article id="should-you-build" class="page" data-title="Should You Build?">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The Builder Track</span><span class="badge b2">This Quarter</span><span class="rt">3 min read</span></div>
+<h1 class="at">Should You Build?</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">Most clinicians should use, configure, and integrate before they build anything. Building is the right call only when the workflow is genuinely yours, recurring, unserved by any vendor, and you can own the maintenance after launch day.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>The build-versus-buy decision is the Delegation Decision (D1) one level up. Before you decide what to hand the AI, decide whether to build the thing that does the handing off at all.</p>
+<p>There is a ladder here, and the cheapest rung that does the job is the right one.</p>
+<ul>
+<li><strong>Use it as-is.</strong> The tool, out of the box, with no setup. Most needs stop here and should.</li>
+<li><strong>Configure it.</strong> Instruction files, projects, custom commands (D6). Most of what feels like "I need to build" is actually "I need to configure."</li>
+<li><strong>Integrate it.</strong> Connect tools that already exist so they talk to each other. No new code, just wiring.</li>
+<li><strong>Build it.</strong> Net-new software with your name on it. The top rung, and the one people reach for first because building is now easy.</li>
+</ul>
+<p>That is the trap. The model writes the first version of almost anything in an afternoon, so the build feels free. It is not. The first version was never the cost. The cost is maintenance: the model updates, the API changes, the workflow drifts, the source moves, and a tool with your judgment baked in that quietly breaks is worse than no tool at all.</p>
+<p>So the real question is not "can I build this." You can. The question is whether the workflow earns its upkeep: is it recurring, specific to your practice, unserved by anything you could buy, verifiable in its output, and owned by someone past the day it ships.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>A clinician spends a Saturday building a discharge-instruction generator for a common presentation. It works beautifully by Sunday night. Six weeks later the model behind it is updated, the tone drifts, the reading level creeps up, and nobody notices because the tool still runs and the output still looks fine. A dozen patients get instructions that read wrong before anyone catches it.</p>
+<p>The build was the easy weekend. The ownership was the actual job, and it was never assigned to anyone. A tool nobody maintains is not an asset. It is a liability with a user interface.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Start at the bottom rung and climb only when forced. Can an existing tool, configured, do this? Usually yes.</li>
+<li>Name the maintainer before you write a line. If the answer is "nobody, really," do not build it.</li>
+<li>Build only verifiable workflows. If you cannot check the output, you cannot safely automate it (D1, D8).</li>
+<li>Prototype in an afternoon, decide in a week. If it is not clearly earning its maintenance cost after a week of real use, kill it without ceremony.</li>
+<li>Write down what it depends on: which model, which source, which API. That list is what you will check when it breaks, and it will break.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>The demo works, so it ships, and the maintenance never gets budgeted. Builder tools rot silently: a model swap, a deprecated API, a changed source, and the output degrades while the tool still appears to run (D3). The clinician who built it has moved on to the next thing, but the tool keeps producing, keeps signing outputs with their standard attached. The failure is discovered downstream, by the people who trusted the output, long after the person who built it stopped watching. Cost: a pipeline failure wearing your name, found by everyone except you.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#the-delegation-decision">The Delegation Decision</a><a class="xt" href="#from-prompts-to-pipelines">Prompts to Pipelines</a><a class="xt" href="#owning-the-record">Owning the Record</a><a class="xt" href="#evals-testing-what-you-built">Evals</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#ai-inbox-drafting"><span class="nd">&#8592; Previous</span><span class="nt">AI Inbox Drafting</span></a><a class="anb nr" href="#memory-engineering"><span class="nd">Next &#8594;</span><span class="nt">Memory Engineering</span></a></nav>
+</div>
+</article>
+
+<article id="memory-engineering" class="page" data-title="Memory Engineering">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The Builder Track</span><span class="badge b2">This Quarter</span><span class="rt">3 min read</span></div>
+<h1 class="at">Memory Engineering</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">Memory is not something the model has. It is context you re-supply. Engineering memory means deciding what the model should always know, what it should know for a given job, and building the durable place that knowledge lives so the right facts load at the right time.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Every product that advertises memory is doing the same trick: storing text and injecting it into the context window at the start of a session (D4). The model itself remembers nothing between conversations (F3). So engineering memory is engineering what gets injected, from where, and when.</p>
+<p>Think in three layers, increasing in durability and decreasing in how often they should load.</p>
+<ul>
+<li><strong>Instruction files.</strong> The role and the standing rules that load every single session (D6). Smallest layer, always present. Your standing orders.</li>
+<li><strong>Project memory.</strong> Facts scoped to one body of work: this study's protocol, this initiative's constraints. Carried across the sessions of that work, absent everywhere else.</li>
+<li><strong>The knowledge base.</strong> Your notes, protocols, and references, retrieved on demand rather than always loaded (D7). The library, not the desk.</li>
+</ul>
+<p>The discipline is curation, not accumulation. Memory bloats by default, and a twenty-page instruction file degrades output exactly like any other heavy window (D4). The skill is keeping the always-loaded layer small and pushing everything else into retrieval, where it scales.</p>
+<p>Provenance is the part people skip. A memory that injects a stale fact is worse than no memory, because the fact arrives with false authority and you stop checking it. Date what you store. Let retrieval pull the current version instead of freezing last month's.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>A clinician building a research assistant sets up three layers deliberately. One instruction file holds her role and her standing rules. A project memory holds this specific study's protocol and inclusion criteria. A retrieval layer sits over her paper library. When she asks for a methods paragraph, the model writes one that reflects this study's actual design, because the design was in memory, not assumed.</p>
+<p>The craft was the boundary between the layers: what must always load, what loads only for this study, what gets fetched when a question touches it. Get those boundaries right and the model feels like it knows her work. Get them wrong and it either knows nothing or drowns in everything.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Sort every fact into always-load, this-project, or fetch-when-relevant. Most of it belongs in the third bucket.</li>
+<li>Keep the always-load layer under a page (D6). It is context, and context is finite.</li>
+<li>Date and version stored facts. A memory with no date is a future hallucination carrying a credential.</li>
+<li>Prefer retrieval over stuffing (D7). The library scales. The desk does not.</li>
+<li>Audit memory like a medication list. Review what is stored on a schedule, and deprescribe what has gone stale.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>Memory accumulates until it poisons. A fact that was true in March gets injected confidently in June, the output inherits it, and because the system "has memory" nobody re-verifies the premise. This is worse than the empty model, which at least announces that it knows nothing. The failure is invisible precisely because the system feels more capable, not less. Cost: confident output built on a premise no human checked, because the machine appeared to remember it.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#context-is-everything">Context Is Everything</a><a class="xt" href="#standing-orders">Standing Orders</a><a class="xt" href="#grounding-and-rag">Grounding &amp; RAG</a><a class="xt" href="#training-data-and-the-cutoff">Training Data</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#should-you-build"><span class="nd">&#8592; Previous</span><span class="nt">Should You Build?</span></a><a class="anb nr" href="#skill-engineering"><span class="nd">Next &#8594;</span><span class="nt">Skill Engineering</span></a></nav>
+</div>
+</article>
+
+<article id="skill-engineering" class="page" data-title="Skill Engineering">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The Builder Track</span><span class="badge b1">Background</span><span class="rt">3 min read</span></div>
+<h1 class="at">Skill Engineering</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">A skill is a workflow you have done well enough, often enough, to write down once and reuse. Engineering skills means turning your best prompt into a named, repeatable capability instead of retyping it and hoping for the same result.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>A one-off prompt solves today's instance. A skill captures the pattern behind it: the role, the steps, the constraints, the output format, packaged so it runs the same way every time. It is the move from prompts to pipelines (D3), made reusable and given a name you can trigger.</p>
+<p>Every modern tool exposes this under a different label: custom commands, saved prompts, skills, project templates, custom GPTs. The mechanism underneath is identical. A unit you trigger, that loads its own instructions on demand and runs them.</p>
+<p>The value is consistency and transfer. The skill encodes your judgment once, so the tenth use is as good as the first, and a colleague who runs your skill gets your standard rather than their improvisation. That is also the quiet power of it: a skill carries expertise to people who do not yet have it.</p>
+<p>A skill is also the right home for failure controls. The verification step, the de-identification rule, the "ask before assuming" instruction can live inside the skill so they fire on every run, instead of depending on whoever is at the keyboard to remember them.</p>
+<p>One discipline governs all of it: scope. A skill that tries to do everything triggers at the wrong times and does nothing well. One skill, one job, one clear trigger.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>An educator writes a skill that turns a rough clinical case into a structured teaching script: the learning objective, the stem, the discriminating findings, the debrief questions, in a fixed format every time. Run it on any case and the shape comes out the same.</p>
+<p>The judgment about what makes a teaching script good was made once, encoded into the skill, and now it transfers to every resident who runs it, including the ones who do not yet have that judgment themselves. The skill is the senior educator, available at 2 a.m., applied identically to the hundredth case as to the first.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Find the prompt you keep retyping. That repetition is your first skill, already identified.</li>
+<li>Write it as role, steps, constraints, format (D5). Put the safety checks inside it, not beside it.</li>
+<li>Give it one job and a clear trigger. Resist the all-in-one skill that does six things adequately.</li>
+<li>Test it on a hard case, not an easy one. A skill that only works on the obvious case is a demo, not a tool.</li>
+<li>Version it deliberately. When you improve the skill, the improvement reaches every future use at once. That is the point, and it is also the risk.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>A skill encodes a judgment, and a bad judgment encoded is a bad judgment at scale. The flawed step that was harmless when you ran it once now fires on every use, silently, with your standard attached. And because the skill "works," nobody re-examines the logic inside it. The error is systematic, identical across everything the skill touched, and traceable to one assumption you wrote down months ago and never looked at again. Cost: a uniform mistake distributed across every output the skill produced, by every person who trusted it.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#from-prompts-to-pipelines">Prompts to Pipelines</a><a class="xt" href="#prompting-is-a-consult">Prompting</a><a class="xt" href="#standing-orders">Standing Orders</a><a class="xt" href="#evals-testing-what-you-built">Evals</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#memory-engineering"><span class="nd">&#8592; Previous</span><span class="nt">Memory Engineering</span></a><a class="anb nr" href="#tool-engineering"><span class="nd">Next &#8594;</span><span class="nt">Tool Engineering</span></a></nav>
+</div>
+</article>
+
+<article id="tool-engineering" class="page" data-title="Tool Engineering">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The Builder Track</span><span class="badge b1">Background</span><span class="rt">3 min read</span></div>
+<h1 class="at">Tool Engineering</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">A tool is anything that lets the model act beyond producing text: search, calculate, read a file, call an API. Tool engineering is mostly about boundaries, not capability: deciding what the model is allowed to touch, what it can change, and building the connection so it can never reach further than its job.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Without tools, a model can only talk. With tools, it can do: query a database, run a calculation, send a request, write a file. The line between a chatbot and an agent is tools.</p>
+<p>The mechanism is function calling. You describe a capability, the model decides when to call it, and your code runs it and hands back the result. The model never touches your systems directly. It asks your code to act, and your code decides whether and how. That gap is where all your control lives.</p>
+<p>MCP, the Model Context Protocol, is the emerging open standard for this connection: a common way to expose tools and data to any model, so an integration you build once works across products instead of being soldered to one vendor (F4). Preferring the open standard is how the work survives a product you will eventually leave.</p>
+<p>The engineering itself is almost entirely about boundaries. The hard questions are not "can the model do this" but "what can this tool reach, what can it change, and what must it never be able to do." A read-only tool over lab values is one level of risk. A tool that can place an order is a different category entirely (D2).</p>
+<p>Least privilege is the whole rule. Give the tool the narrowest access the job requires. A tool that can do more than its task is both an accident surface and an attack surface, especially once external content enters and prompt injection becomes possible.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>A clinician builds a tool that lets the model pull a patient's recent labs into the window: read-only, de-identified, from a sanctioned source. The model can now reason over real values instead of ones the clinician retyped from memory.</p>
+<p>The capability is small on purpose. It can read; it cannot write, order, or message anyone. That restraint is the design, not a limitation of it. The clinician built exactly the door the task needed and not one inch more, so the worst thing a bad day can produce is a wrong read, never a wrong action.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Start read-only. A tool that only reads can be wrong, but it cannot act wrongly.</li>
+<li>Grant the narrowest access the task requires. Least privilege is not paranoia. It is the specification.</li>
+<li>Put a human checkpoint in front of any tool that commits an action (D2, D10). Agency is earned, never the default.</li>
+<li>Assume external inputs are hostile. If the model reads content you did not write, it can be injected, and a tool with reach plus an injection is a real exposure.</li>
+<li>Prefer the open standard over one-vendor wiring, so an integration outlives the product it started in (F4).</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>A tool with more reach than its job, on the day the input is poisoned. The model reads a document carrying hidden instructions, follows them, and the over-privileged tool does something nobody asked for. The quieter version: a write-capable tool runs inside a pipeline, an upstream step degrades, and the tool commits the bad result before any human reads it (D3). Cost: a real action taken in a real system, by a tool you built, that you never reviewed and did not intend.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#stakes-and-reversibility">Stakes &amp; Reversibility</a><a class="xt" href="#from-prompts-to-pipelines">Prompts to Pipelines</a><a class="xt" href="#the-signature-rule">The Signature Rule</a><a class="xt" href="#the-wrapper-is-not-the-model">The Wrapper</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#skill-engineering"><span class="nd">&#8592; Previous</span><span class="nt">Skill Engineering</span></a><a class="anb nr" href="#evals-testing-what-you-built"><span class="nd">Next &#8594;</span><span class="nt">Evals: Testing What You Built</span></a></nav>
+</div>
+</article>
+
+<article id="evals-testing-what-you-built" class="page" data-title="Evals: Testing What You Built">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">The Builder Track</span><span class="badge b2">This Quarter</span><span class="rt">3 min read</span></div>
+<h1 class="at">Evals: Testing What You Built</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">An eval is a repeatable test of whether your AI tool still does its job. Without one, you find out it broke from the people downstream of it. With one, you find out before they do.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>Software you write either works or visibly fails. AI tools do neither. They degrade quietly: a model update, a changed source, a drifted prompt, and the output gets subtly worse while the tool keeps running and keeps sounding right (D3, F4). Nothing throws an error. An eval is how you make that silent failure loud.</p>
+<p>An eval is a set of known cases with known good answers, run against your tool on a schedule. It is the unit test for something that does not behave the same way twice (F5). You are not asking "did it pass." You are watching a rate across many cases, and watching that rate move when something underneath changes.</p>
+<p>Build the eval from real failures. Every time the tool gets something wrong, that case becomes a permanent test. The eval set is your tool's memory of its own mistakes, the one thing standing between it and making the same error twice unnoticed.</p>
+<p>The highest-value moment to run an eval is immediately after anything changes: a model version, a prompt edit, a new data source. That is exactly when clinicians assume "it still works," and exactly when it often does not.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>A clinician who built a discharge-instruction generator keeps twenty real cases with the correct output written out for each. Every time the model updates, she reruns the twenty.</p>
+<p>One update, three of them come back with a subtly wrong medication instruction. The tool still ran. The output still read like every correct instruction before it. Without the eval, those three would have shipped to patients, and the first signal would have been a phone call or worse. The test she built before she trusted the tool caught what no error message ever would have.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Before you trust a tool, build its test set. Twenty real cases beat a thousand imagined ones.</li>
+<li>Turn every failure into a permanent case. The eval set grows from real mistakes, not guesses.</li>
+<li>Rerun after every change: model version, prompt, data source. Change is the trigger.</li>
+<li>Track the rate, not the single run. Probabilistic output needs a denominator (F5).</li>
+<li>Set a floor. If the pass rate drops below it, the tool comes down until it is fixed. No exceptions for how useful it is.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>No eval, so the only detector left is harm. The tool degrades after a silent model swap (F4), the outputs stay fluent, and the first signal is a person downstream catching a mistake that had been running for weeks. The version with extra steps: the eval exists, but nobody reruns it after changes, which is the same failure dressed up as diligence. Cost: the degradation window, measured in everything the tool produced between the day it quietly broke and the day a human happened to notice.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#from-prompts-to-pipelines">Prompts to Pipelines</a><a class="xt" href="#judging-the-output">Judging Output</a><a class="xt" href="#the-wrapper-is-not-the-model">The Wrapper</a><a class="xt" href="#same-question-different-answer">Same Question, Different Answer</a></div></div>
+
+</div>
+<nav class="an"><a class="anb " href="#tool-engineering"><span class="nd">&#8592; Previous</span><span class="nt">Tool Engineering</span></a><a class="anb nr" href="#/"><span class="nd">Next &#8594;</span><span class="nt">Home</span></a></nav>
+</div>
+</article>
+
+<!-- ============================================================
+     BLOCK D — FERPA SPREAD (Legal & Compliance, row 05)
+     Insert after the closing </article> of #consent-and-disclosure,
+     before the #ambient-scribes article.
+     ============================================================ -->
+
+<article id="ferpa-and-medicine" class="page" data-title="FERPA: The Other Privacy Law">
+<div class="art-wrap">
+<div class="am"><a class="crumb" href="#/">FAAI</a><span class="csep">/</span><span class="as">Legal &amp; Compliance</span><span class="badge b2">This Quarter</span><span class="rt">3 min read</span></div>
+<h1 class="at">FERPA: The Other Privacy Law</h1>
+<div class="bl"><div class="bll">Bottom Line</div><p class="blt">HIPAA protects your patients' records. FERPA protects your learners', and at a campus clinic it can even govern the chart itself. If you teach, the evaluation you are about to paste into a chatbot is a protected record too.</p></div>
+<div class="ab">
+<h2>The Concept</h2>
+<p>FERPA, the Family Educational Rights and Privacy Act, is the federal privacy law for education records at any institution that takes federal education funds. If you teach students, you handle records it protects: grades, exam scores, clerkship evaluations, remediation plans, professionalism concerns, the MSPE.</p>
+<p>It reaches medicine in two places. The first is medical education. The narrative evaluation, the competency-committee summary, the struggling-learner file are education records, and disclosing them outside the institution without consent is the same category of act as disclosing a chart. The second is the counterintuitive one: at student health services, the campus clinic's chart on a student is typically a FERPA "treatment record," excluded from HIPAA entirely. The privacy regime follows the institution, not the stethoscope.</p>
+<p>The AI angle is that FERPA has no BAA. The lawful route for a vendor to touch education records runs through the institution's contracts, under what the law calls the school-official exception. A consumer chatbot you signed up for on your own is not a school official, so pasting learner records into it is a disclosure, exactly as pasting PHI into it would be.</p>
+<p>And de-identification is harder for learners than for patients, because cohorts are small. "The intern who failed the airway assessment on this rotation" identifies one person to everyone who matters, with no name attached.</p>
+<h2>Clinical Anchor</h2>
+<div class="anch"><p>MSPE season. A clerkship director pastes three years of narrative evaluations for one student into a consumer chatbot and asks for a synthesis. Her PHI hygiene is perfect; she would never do this with a chart. But the learner file did not trigger the reflex, because it is not patient data.</p>
+<p>Everything in that paste was an education record: the grades, the narratives, the remediation note from second year. It is now retained under consumer terms, outside the institution, outside any contract. And the student has a federal right to inspect their own file, which means the file's travels can surface in a way a patient chart's rarely does: the moment the record is disputed, everyone who handled it gets asked how.</p></div>
+<h2>What To Do</h2>
+<ol>
+<li>Extend the PHI reflex to learner data. Before pasting, ask about an evaluation exactly what you would ask about a chart.</li>
+<li>Know which regime governs the record in front of you: patient chart, HIPAA; learner record, FERPA; campus-clinic student chart, usually FERPA, not HIPAA.</li>
+<li>Use institution-sanctioned tools for learner work. The school-official exception runs through contracts, and your personal chatbot is not in one.</li>
+<li>De-identify for cohort, not just name. In a class of eight, the rotation plus the deficiency is an identifier.</li>
+<li>Draft with identity out, add identity after, inside the sanctioned system. The model never needed the name to help you write.</li>
+</ol>
+<h2 class="rh">How It Fails</h2>
+<p>The clinician with flawless patient-privacy habits treats learner data as fair game precisely because it is not PHI. The struggling-learner summary goes into a consumer tool, works beautifully, and becomes routine. Then the learner exercises the right FERPA gives them, requests their file, disputes the record, and the question "who has seen this" gets asked formally. Cost: a protected record sitting in a system the institution never sanctioned, a violation with your login on the upload, and a trust breach with someone whose career you hold in your hands.</p>
+<div class="xr"><div class="xrl">See Also</div><div class="xrt"><a class="xt" href="#phi-what-counts">PHI &#8212; What Counts</a><a class="xt" href="#hipaa-basics">HIPAA Basics</a><a class="xt" href="#consent-and-disclosure">Consent &amp; Disclosure</a><a class="xt" href="#owning-the-record">Owning the Record</a></div></div>
+</div>
+<nav class="an"><a class="anb " href="#consent-and-disclosure"><span class="nd">&#8592; Previous</span><span class="nt">Consent &amp; Disclosure</span></a><a class="anb nr" href="#ambient-scribes"><span class="nd">Next &#8594;</span><span class="nt">Ambient AI Scribes</span></a></nav>
+</div>
+</article>
+
+<!-- D1. Library row — add as row 05 inside the Legal & Compliance group's .lrs div,
+after the consent-and-disclosure row:
+<a class="lr" href="#ferpa-and-medicine"><span class="ln">05</span><span class="lt">FERPA: The Other Privacy Law</span><span class="lm">3 min</span><span class="badge b2">This Quarter</span></a>
+And in that group's summary:
+OLD: <span class="lgc">4 spreads</span>
+NEW: <span class="lgc">5 spreads</span>
+OLD: <span class="lgd">PHI, HIPAA, liability, consent. Short rules, long consequences.</span>
+NEW: <span class="lgd">PHI, HIPAA, liability, consent, FERPA. Short rules, long consequences.</span>
+-->
+
+<!-- D2. Chain stitch for FERPA:
+In #consent-and-disclosure's <nav class="an">:
+OLD: <a class="anb nr" href="#ambient-scribes"><span class="nd">Next &#8594;</span><span class="nt">Ambient AI Scribes</span></a>
+NEW: <a class="anb nr" href="#ferpa-and-medicine"><span class="nd">Next &#8594;</span><span class="nt">FERPA: The Other Privacy Law</span></a>
+In #ambient-scribes' <nav class="an">:
+OLD: <a class="anb " href="#consent-and-disclosure"><span class="nd">&#8592; Previous</span><span class="nt">Consent &amp; Disclosure</span></a>
+NEW: <a class="anb " href="#ferpa-and-medicine"><span class="nd">&#8592; Previous</span><span class="nt">FERPA: The Other Privacy Law</span></a>
+-->
+
+<!-- D3. SLUGS array — insert "ferpa-and-medicine" between "consent-and-disclosure"
+and "ambient-scribes" (keeps search-result order matching the book order).
+-->
+
+<!-- D4. "How to Use This Book", the Legal map paragraph:
+OLD: <p><strong>Legal.</strong> PHI, HIPAA, liability, consent. Short, because the rules are short. The consequences are not.</p>
+NEW: <p><strong>Legal.</strong> PHI, HIPAA, liability, consent, FERPA. Short, because the rules are short. The consequences are not.</p>
+-->
+
+<!-- ============================================================
+     BLOCK C — SMALL EDITS (exact old → new strings)
+     See handoff/BUILDER-TRACK-HANDOFF.md steps 3–7 for where
+     each of these goes.
+     ============================================================ -->
+
+<!-- C1. Re-point the last article's Next link (in #ai-inbox-drafting's <nav class="an">):
+OLD: <a class="anb nr" href="#/"><span class="nd">Next &#8594;</span><span class="nt">Home</span></a>
+NEW: <a class="anb nr" href="#should-you-build"><span class="nd">Next &#8594;</span><span class="nt">Should You Build?</span></a>
+(Only the instance inside the #ai-inbox-drafting article. The new evals spread ends the chain with its own Next → Home.)
+-->
+
+<!-- C2. SLUGS array (script at bottom of index.html) — append before the closing bracket:
+,"should-you-build","memory-engineering","skill-engineering","tool-engineering","evals-testing-what-you-built"
+-->
+
+<!-- C3. Stat bar (total = 29 + 5 builder + 1 FERPA = 35):
+OLD: <div class="stat"><b>29</b><span>Spreads</span></div>
+NEW: <div class="stat"><b>35</b><span>Spreads</span></div>
+-->
+
+<!-- C4. Depth-chooser third card:
+OLD: <span class="dn">All</span><span class="du">29 Spreads</span>
+NEW: <span class="dn">All</span><span class="du">35 Spreads</span>
+OLD: <span class="dd">Foundations, the 4D framework, legal, and the tools already in your hospital. About 90 minutes cover to cover.</span>
+NEW: <span class="dd">Foundations, the 4D framework, legal, the tools already in your hospital, and the builder track. About 110 minutes cover to cover.</span>
+-->
+
+<!-- C5. Library section header legend — extend the mono-note:
+OLD: <span class="mono-note"><span class="badge b3">This Week</span> costs you this week &#183; <span class="badge b2">This Quarter</span> costs you this quarter</span>
+NEW: <span class="mono-note"><span class="badge b3">This Week</span> costs you this week &#183; <span class="badge b2">This Quarter</span> costs you this quarter &#183; <span class="badge b1">Background</span> is context</span>
+-->
+
+<!-- C6. "How to Use This Book" article, "The Map" section:
+OLD: <p>Five sections, in dependency order.</p>
+NEW: <p>Six sections, in dependency order.</p>
+Then insert after the Clinical Applications paragraph
+(<p><strong>Clinical Applications.</strong> ... left out.</p>):
+<p><strong>The Builder Track.</strong> For when using and configuring stop being enough. Whether to build at all, then memory, skills, and tools, and the evals that catch what you built when it quietly breaks.</p>
+-->
