@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "faai",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["quartz", "build", "--serve", "--port", "8080"],
-      "port": 8080
+      "name": "faai-static",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4173"],
+      "port": 4173
     }
   ]
 }
